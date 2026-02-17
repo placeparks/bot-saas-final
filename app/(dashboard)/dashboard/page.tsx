@@ -99,6 +99,21 @@ export default function DashboardPage() {
     }
   }
 
+  const handleManageSubscription = async () => {
+    try {
+      const res = await fetch('/api/stripe/portal', { method: 'POST' })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert('Could not open billing portal')
+      }
+    } catch (error) {
+      console.error('Portal error:', error)
+      alert('Failed to open billing portal')
+    }
+  }
+
   // Loading state
   if (loading) {
     return (
@@ -372,6 +387,7 @@ export default function DashboardPage() {
                   <div className="pt-2">
                     <Button
                       variant="outline"
+                      onClick={handleManageSubscription}
                       className="w-full border-red-500/20 text-red-400 hover:border-red-500/40 hover:bg-red-500/5 transition-all duration-300 font-mono text-xs"
                     >
                       Manage Subscription
@@ -416,19 +432,7 @@ export default function DashboardPage() {
                       <span className="text-white/30 font-mono text-xs">Port</span>
                       <span className="font-mono text-sm text-white/60">{instance.port}</span>
                     </div>
-                    {instance.accessUrl && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-white/30 font-mono text-xs">Gateway</span>
-                        <a
-                          href={instance.accessUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono text-xs text-red-400 hover:text-red-300 transition-colors flex items-center gap-1"
-                        >
-                          Open <ExternalLink className="h-3 w-3" />
-                        </a>
-                      </div>
-                    )}
+               
                   </div>
                   <div className="pt-3 mt-3 border-t border-red-500/10">
                     <Button
