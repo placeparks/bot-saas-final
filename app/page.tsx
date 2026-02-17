@@ -795,7 +795,7 @@ export default function Home() {
                 transition={{ delay: 0.7, duration: 0.6 }}
                 className="mt-6 text-lg sm:text-xl text-white/50 font-mono max-w-xl mx-auto"
               >
-                Deploy your private AI agent. Wire it to Discord & Telegram.
+                The ultimate OpenClaw resource hub.
                 Join the club that runs 24/7 autonomous agents.
               </motion.p>
 
