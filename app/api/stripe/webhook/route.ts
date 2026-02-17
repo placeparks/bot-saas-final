@@ -107,9 +107,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   )
 
   // Map plan string to enum
-  const planEnum = plan === 'MONTHLY' ? Plan.MONTHLY :
-                   plan === 'THREE_MONTH' ? Plan.THREE_MONTH :
-                   Plan.YEARLY
+  const planEnum = plan === 'MONTHLY' ? Plan.MONTHLY : Plan.YEARLY
 
   // Create or update subscription
   await prisma.subscription.upsert({
