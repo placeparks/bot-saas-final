@@ -31,12 +31,12 @@ const bootLines = [
   { text: '  [OK] Claw Club gateway — ENABLED', delay: 2650 },
   { text: '> All systems operational.', delay: 2850 },
   { text: '', delay: 3000 },
-  { text: '  ██████╗██╗      █████╗ ██╗    ██╗', delay: 3050 },
-  { text: '  ██╔════╝██║     ██╔══██╗██║    ██║', delay: 3100 },
-  { text: '  ██║     ██║     ███████║██║ █╗ ██║', delay: 3150 },
-  { text: '  ██║     ██║     ██╔══██║██║███╗██║', delay: 3200 },
-  { text: '  ╚██████╗███████╗██║  ██║╚███╔███╔╝', delay: 3250 },
-  { text: '   ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝', delay: 3300 },
+  { text: '  ██████╗ ██╗       █████╗  ██╗    ██╗', delay: 3050 },
+  { text: '  ██╔════╝ ██║      ██╔══██╗ ██║    ██║', delay: 3100 },
+  { text: '  ██║      ██║      ███████║ ██║ █╗ ██║', delay: 3150 },
+  { text: '  ██║      ██║      ██╔══██║ ██║███╗██║', delay: 3200 },
+  { text: '  ╚██████╗ ███████╗ ██║  ██║ ╚███╔███╔╝', delay: 3250 },
+  { text: '   ╚═════╝ ╚══════╝ ╚═╝  ╚═╝  ╚══╝╚══╝', delay: 3300 },
   { text: '           C L U B', delay: 3400 },
   { text: '', delay: 3500 },
   { text: '> Press any key to enter...', delay: 3700 },
@@ -92,7 +92,7 @@ function IntroSequence({ onComplete }: { onComplete: () => void }) {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.15 }}
-                className={`${
+                className={`whitespace-pre ${
                   line.text.includes('[OK]') ? 'text-red-500' :
                   line.text.includes('[ACTIVE]') ? 'text-red-400' :
                   line.text.includes('██') || line.text.includes('╗') || line.text.includes('╝') || line.text.includes('╚') || line.text.includes('╔') || line.text.includes('║') ? 'text-red-500 font-bold' :
