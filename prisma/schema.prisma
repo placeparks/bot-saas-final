@@ -43,7 +43,6 @@ model Subscription {
 
 enum Plan {
   MONTHLY
-  THREE_MONTH
   YEARLY
 }
 
