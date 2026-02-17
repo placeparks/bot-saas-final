@@ -18,7 +18,11 @@ const OPENCLAW_IMAGE = process.env.OPENCLAW_IMAGE || 'ghcr.io/placeparks/bot-saa
 // Runs on port 18800 inside the container alongside OpenClaw (port 18789).
 const PAIRING_SERVER_JS = `
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 const { spawnSync } = require('child_process');
+
+const startedAt = Date.now();
 
 function send(res, code, data) {
   const payload = JSON.stringify(data);
@@ -48,11 +52,121 @@ function readBody(req, cb) {
   });
 }
 
+// Read OpenClaw log files and parse stats
+function getStats() {
+  // Search multiple possible log directories
+  const logDirs = [
+    '/tmp/openclaw',
+    '/tmp/.openclaw',
+    process.env.OPENCLAW_CONFIG_DIR ? process.env.OPENCLAW_CONFIG_DIR : null,
+    process.env.HOME ? path.join(process.env.HOME, '.openclaw') : null,
+    '/home/node/.openclaw',
+  ].filter(Boolean);
+
+  let messages = 0;
+  let tokens = 0;
+  const responseTimes = [];
+  let totalLines = 0;
+  let logFilesFound = [];
+
+  try {
+    // Collect all .log files from all candidate directories (including subdirs like /logs/)
+    const allLogFiles = [];
+    for (const dir of logDirs) {
+      if (!fs.existsSync(dir)) continue;
+      // Check dir itself for .log files
+      try {
+        const entries = fs.readdirSync(dir);
+        for (const e of entries) {
+          const full = path.join(dir, e);
+          try {
+            const st = fs.statSync(full);
+            if (st.isFile() && e.endsWith('.log')) allLogFiles.push(full);
+            if (st.isDirectory()) {
+              // Check one level deeper (e.g. logs/ subdir)
+              const sub = fs.readdirSync(full);
+              for (const s of sub) {
+                if (s.endsWith('.log')) allLogFiles.push(path.join(full, s));
+              }
+            }
+          } catch (_) {}
+        }
+      } catch (_) {}
+    }
+
+    logFilesFound = allLogFiles;
+
+    for (const file of allLogFiles) {
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\\n');
+      totalLines += lines.length;
+      for (const line of lines) {
+        // Count inbound messages (user sent to bot)
+        if (/\\[(telegram|discord|whatsapp|slack|signal|matrix|gateway)\\].*(?:inbound|received|new message|handling|incoming|message from)/i.test(line)) {
+          messages++;
+        }
+        // Count outbound replies
+        else if (/\\[(telegram|discord|whatsapp|slack|signal|matrix|gateway)\\].*(?:sent|reply|respond|sending|outbound)/i.test(line)) {
+          messages++;
+        }
+        // Count agent turns as messages
+        else if (/\\[agent\\].*(?:turn|processing|completed|response|handling|responding)/i.test(line)) {
+          messages++;
+        }
+        // Broad fallback: any line with "message" near a channel name
+        else if (/(?:telegram|discord|whatsapp|slack).*message/i.test(line) || /message.*(?:telegram|discord|whatsapp|slack)/i.test(line)) {
+          messages++;
+        }
+        // Extract token usage
+        const tokenMatch = line.match(/(\\d[\\d,]*)\\s*tokens?/i);
+        if (tokenMatch) {
+          tokens += parseInt(tokenMatch[1].replace(/,/g, ''), 10) || 0;
+        }
+        // Extract response times
+        const timeMatch = line.match(/(?:completed|response|latency|took)[^\\d]*(\\d+(?:\\.\\d+)?)\\s*ms/i);
+        if (timeMatch) {
+          responseTimes.push(parseFloat(timeMatch[1]));
+        }
+      }
+    }
+  } catch (e) {
+    console.error('[pairing-server] stats error:', e.message);
+  }
+
+  // Calculate uptime
+  const uptimeMs = Date.now() - startedAt;
+  const mins = Math.floor(uptimeMs / 60000);
+  const hrs = Math.floor(mins / 60);
+  const days = Math.floor(hrs / 24);
+  let uptime = mins + 'm';
+  if (days > 0) uptime = days + 'd ' + (hrs % 24) + 'h';
+  else if (hrs > 0) uptime = hrs + 'h ' + (mins % 60) + 'm';
+
+  // Avg response time
+  let avgResponse = '--';
+  if (responseTimes.length > 0) {
+    const avg = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+    avgResponse = avg < 1000 ? Math.round(avg) + 'ms' : (avg / 1000).toFixed(1) + 's';
+  }
+
+  return {
+    messagesProcessed: messages,
+    uptime,
+    avgResponseTime: avgResponse,
+    tokensUsed: tokens,
+    _debug: { logFiles: logFilesFound.length, totalLines, dirs: logDirs.filter(d => d && fs.existsSync(d)) }
+  };
+}
+
 const handler = (req, res) => {
   console.log('[pairing-server]', req.method, req.url);
 
   if (req.method === 'GET' && req.url === '/health') {
     return send(res, 200, { status: 'ok' });
+  }
+
+  if (req.method === 'GET' && req.url === '/stats') {
+    return send(res, 200, getStats());
   }
 
   if (req.method === 'GET' && req.url && req.url.startsWith('/pairing/list/')) {
