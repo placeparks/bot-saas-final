@@ -27,15 +27,6 @@ export const PLANS = {
     priceId: process.env.STRIPE_PRICE_MONTHLY!,
     interval: 'month' as const,
   },
-  THREE_MONTH: {
-    name: '3 Months',
-    price: 75,
-    pricePerMonth: 25,
-    savings: 12,
-    discount: 13,
-    priceId: process.env.STRIPE_PRICE_THREE_MONTH!,
-    interval: '3 months' as const,
-  },
   YEARLY: {
     name: 'Yearly',
     price: 299,
