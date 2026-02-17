@@ -109,6 +109,17 @@ export function generateOpenClawConfig(userConfig: UserConfiguration) {
     }
   }
 
+  // Add agent name via agents.list identity
+  if (userConfig.agentName) {
+    config.agents.list = [{
+      id: 'main',
+      default: true,
+      identity: {
+        name: userConfig.agentName
+      }
+    }]
+  }
+
   // Add thinking mode
   if (userConfig.thinkingMode) {
     config.agents.defaults.thinkingDefault = userConfig.thinkingMode
