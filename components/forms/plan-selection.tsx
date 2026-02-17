@@ -13,17 +13,6 @@ const plans = [
     features: ['All features included', 'Unlimited messages', 'All channels', '24/7 support']
   },
   {
-    id: 'THREE_MONTH',
-    name: '3 Months',
-    price: 75,
-    pricePerMonth: 25,
-    period: '/3 months',
-    discount: 13,
-    badge: 'POPULAR',
-    description: 'Most popular. Save $12.',
-    features: ['All features included', 'Unlimited messages', 'All channels', 'Priority support', 'Save $12']
-  },
-  {
     id: 'YEARLY',
     name: 'Yearly',
     price: 299,
@@ -32,7 +21,7 @@ const plans = [
     discount: 14,
     badge: 'BEST VALUE',
     popular: true,
-    description: 'Best value. Serious members.',
+    description: 'Best value. Save $49.',
     features: ['All features included', 'Unlimited messages', 'All channels', 'Priority support', 'Save $49']
   }
 ]
@@ -44,7 +33,7 @@ interface PlanSelectionProps {
 
 export default function PlanSelection({ selectedPlan, onSelect }: PlanSelectionProps) {
   return (
-    <div className="grid md:grid-cols-3 gap-5">
+    <div className="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
       {plans.map((plan, i) => {
         const isSelected = selectedPlan === plan.id
         return (
