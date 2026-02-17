@@ -3,8 +3,6 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getProvider } from '@/lib/deploy'
-import { RailwayClient } from '@/lib/railway/client'
-import { parseLogsForStats } from '@/lib/openclaw/log-parser'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -53,15 +51,17 @@ export async function GET(req: Request) {
     // Check instance health
     const isHealthy = await getProvider().checkHealth(user.instance.id)
 
-    // Fetch usage stats from OpenClaw logs (best-effort, don't block on failure)
+    // Fetch usage stats from pairing server's /stats endpoint (best-effort)
     let stats = null
     try {
-      if (user.instance.containerId) {
-        const railway = new RailwayClient()
-        const deployment = await railway.getLatestDeployment(user.instance.containerId)
-        if (deployment) {
-          const logs = await railway.getLogs(deployment.id, 500)
-          stats = parseLogsForStats(logs, deployment.createdAt)
+      if (user.instance.accessUrl) {
+        const statsUrl = `${user.instance.accessUrl}/stats`
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 5000)
+        const res = await fetch(statsUrl, { signal: controller.signal })
+        clearTimeout(timeout)
+        if (res.ok) {
+          stats = await res.json()
         }
       }
     } catch (err) {
