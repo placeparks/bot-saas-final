@@ -26,14 +26,14 @@ export default function PricingPage() {
       ]
     },
     {
-      name: '3 Months',
-      price: 75,
-      pricePerMonth: 25,
-      period: '/3 months',
-      discount: 13,
-      badge: 'POPULAR',
+      name: 'Yearly',
+      price: 299,
+      pricePerMonth: 24.92,
+      period: '/year',
+      discount: 14,
+      badge: 'BEST VALUE',
       popular: true,
-      description: 'Most popular. Save $12.',
+      description: 'Best value. Save $49.',
       features: [
         'All features included',
         'Unlimited messages',
@@ -41,24 +41,6 @@ export default function PricingPage() {
         'Skills & extensions',
         'Web search & browser',
         'Priority support',
-        'Price locked forever'
-      ]
-    },
-    {
-      name: 'Yearly',
-      price: 299,
-      pricePerMonth: 24.92,
-      period: '/year',
-      discount: 14,
-      badge: 'BEST VALUE',
-      description: 'Best value. Serious members.',
-      features: [
-        'All features included',
-        'Unlimited messages',
-        'Telegram + Discord channels',
-        'Skills & extensions',
-        'Web search & browser',
-        'Dedicated support',
         'Founding member perks'
       ]
     }
@@ -146,7 +128,7 @@ export default function PricingPage() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mt-14">
+        <div className="grid md:grid-cols-2 gap-6 mt-14 max-w-3xl mx-auto">
           {plans.map((plan) => (
             <Card
               key={plan.name}
