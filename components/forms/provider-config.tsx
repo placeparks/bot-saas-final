@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
-import { ExternalLink, Eye, EyeOff } from 'lucide-react'
+import { ExternalLink, Eye, EyeOff, ChevronDown, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PROVIDERS } from '@/lib/models'
 
@@ -15,6 +15,18 @@ interface ProviderConfigProps {
 
 export default function ProviderConfig({ config, onChange }: ProviderConfigProps) {
   const [showApiKey, setShowApiKey] = useState(false)
+  const [modelOpen, setModelOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setModelOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <div className="space-y-6">
@@ -101,23 +113,50 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
         <p className="text-sm text-white/60 mb-3">
           We{"'"}ll use the best model by default. Advanced users can override this.
         </p>
-        <select
-          id="model"
-          className="w-full h-10 rounded-md border border-red-500/15 bg-white/[0.03] px-3 py-2 text-sm text-white focus:border-red-500/40 transition-colors"
-          value={config.model}
-          onChange={(e) => onChange({ model: e.target.value })}
-        >
-          <option value="" className="text-black bg-white">
-            Default (Recommended)
-          </option>
-          {PROVIDERS
-            .find(p => p.id === config.provider)
-            ?.models.map(m => (
-              <option key={m.id} value={m.id} className="text-black bg-white">
-                {m.name} — {m.description}
-              </option>
-            ))}
-        </select>
+        <div className="relative" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={() => setModelOpen(!modelOpen)}
+            className="w-full h-10 rounded-md border border-red-500/15 bg-white/[0.03] px-3 py-2 text-sm text-left text-white focus:border-red-500/40 focus:outline-none focus:ring-1 focus:ring-red-500/20 transition-colors flex items-center justify-between"
+          >
+            <span className={config.model ? 'text-white' : 'text-white/50'}>
+              {config.model
+                ? PROVIDERS.find(p => p.id === config.provider)?.models.find(m => m.id === config.model)?.name || config.model
+                : 'Default (Recommended)'}
+            </span>
+            <ChevronDown className={`h-4 w-4 text-white/30 transition-transform ${modelOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {modelOpen && (
+            <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-md border border-red-500/20 bg-[#0a0a0a] shadow-lg shadow-black/50">
+              <div
+                className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${
+                  !config.model ? 'text-red-400 bg-red-500/10' : 'text-white/70 hover:bg-white/[0.05] hover:text-white'
+                }`}
+                onClick={() => { onChange({ model: '' }); setModelOpen(false) }}
+              >
+                <span>Default (Recommended)</span>
+                {!config.model && <Check className="h-3.5 w-3.5 text-red-400" />}
+              </div>
+              {PROVIDERS
+                .find(p => p.id === config.provider)
+                ?.models.map(m => {
+                  const isActive = config.model === m.id
+                  return (
+                    <div
+                      key={m.id}
+                      className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${
+                        isActive ? 'text-red-400 bg-red-500/10' : 'text-white/70 hover:bg-white/[0.05] hover:text-white'
+                      }`}
+                      onClick={() => { onChange({ model: m.id }); setModelOpen(false) }}
+                    >
+                      <span>{m.name} <span className="text-white/30">— {m.description}</span></span>
+                      {isActive && <Check className="h-3.5 w-3.5 text-red-400 flex-shrink-0" />}
+                    </div>
+                  )
+                })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
