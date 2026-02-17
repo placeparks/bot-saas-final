@@ -109,27 +109,15 @@ export function generateOpenClawConfig(userConfig: UserConfiguration) {
     }
   }
 
-  // Add agent name/identity
-  if (userConfig.agentName) {
-    config.agents.defaults.identity = {
-      name: userConfig.agentName
-    }
-  }
-
-  // Add system prompt
-  if (userConfig.systemPrompt) {
-    config.agents.defaults.systemPrompt = userConfig.systemPrompt
-  }
-
   // Add thinking mode
   if (userConfig.thinkingMode) {
-    config.agents.defaults.thinking = userConfig.thinkingMode
+    config.agents.defaults.thinkingDefault = userConfig.thinkingMode
   }
 
   // Add session settings
   if (userConfig.sessionMode) {
     config.session = {
-      mode: userConfig.sessionMode
+      scope: userConfig.sessionMode
     }
   }
 
@@ -272,6 +260,15 @@ export function buildEnvironmentVariables(userConfig: UserConfiguration): Record
 
   if (userConfig.elevenlabsApiKey) {
     env.ELEVENLABS_API_KEY = userConfig.elevenlabsApiKey
+  }
+
+  // Agent name & system prompt are written to workspace SOUL.md at startup
+  // (OpenClaw doesn't support these as JSON config keys)
+  if (userConfig.agentName) {
+    env._AGENT_NAME = userConfig.agentName
+  }
+  if (userConfig.systemPrompt) {
+    env._SYSTEM_PROMPT = userConfig.systemPrompt
   }
 
   return env
