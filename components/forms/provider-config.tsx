@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
@@ -16,17 +17,41 @@ interface ProviderConfigProps {
 export default function ProviderConfig({ config, onChange }: ProviderConfigProps) {
   const [showApiKey, setShowApiKey] = useState(false)
   const [modelOpen, setModelOpen] = useState(false)
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 })
+  const triggerRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const updatePosition = useCallback(() => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width })
+    }
+  }, [])
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current && !dropdownRef.current.contains(e.target as Node) &&
+        triggerRef.current && !triggerRef.current.contains(e.target as Node)
+      ) {
         setModelOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  useEffect(() => {
+    if (modelOpen) {
+      updatePosition()
+      window.addEventListener('scroll', updatePosition, true)
+      window.addEventListener('resize', updatePosition)
+      return () => {
+        window.removeEventListener('scroll', updatePosition, true)
+        window.removeEventListener('resize', updatePosition)
+      }
+    }
+  }, [modelOpen, updatePosition])
 
   return (
     <div className="space-y-6">
@@ -113,10 +138,11 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
         <p className="text-sm text-white/60 mb-3">
           We{"'"}ll use the best model by default. Advanced users can override this.
         </p>
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative">
           <button
+            ref={triggerRef}
             type="button"
-            onClick={() => setModelOpen(!modelOpen)}
+            onClick={() => { updatePosition(); setModelOpen(!modelOpen) }}
             className="w-full h-10 rounded-md border border-red-500/15 bg-white/[0.03] px-3 py-2 text-sm text-left text-white focus:border-red-500/40 focus:outline-none focus:ring-1 focus:ring-red-500/20 transition-colors flex items-center justify-between"
           >
             <span className={config.model ? 'text-white' : 'text-white/50'}>
@@ -126,8 +152,12 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
             </span>
             <ChevronDown className={`h-4 w-4 text-white/30 transition-transform ${modelOpen ? 'rotate-180' : ''}`} />
           </button>
-          {modelOpen && (
-            <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-md border border-red-500/20 bg-[#0a0a0a] shadow-lg shadow-black/50">
+          {modelOpen && createPortal(
+            <div
+              ref={dropdownRef}
+              className="fixed z-[9999] max-h-60 overflow-auto rounded-md border border-red-500/20 bg-[#0a0a0a] shadow-lg shadow-black/50"
+              style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width }}
+            >
               <div
                 className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${
                   !config.model ? 'text-red-400 bg-red-500/10' : 'text-white/70 hover:bg-white/[0.05] hover:text-white'
@@ -154,7 +184,8 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
                     </div>
                   )
                 })}
-            </div>
+            </div>,
+            document.body
           )}
         </div>
       </div>
