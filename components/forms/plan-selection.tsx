@@ -7,7 +7,7 @@ const plans = [
   {
     id: 'MONTHLY',
     name: 'Monthly',
-    price: 29,
+    price: 35,
     period: '/month',
     description: 'Try it out. Cancel anytime.',
     features: ['All features included', 'Unlimited messages', 'All channels', '24/7 support']
@@ -15,7 +15,7 @@ const plans = [
   {
     id: 'YEARLY',
     name: 'Yearly',
-    price: 299,
+    price: 320,
     pricePerMonth: 24.92,
     period: '/year',
     discount: 14,
