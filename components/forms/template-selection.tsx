@@ -11,22 +11,21 @@ const templates = [
     description: 'A helpful support agent that answers questions, resolves issues, and escalates when needed.',
     badge: 'Popular',
     icon: Headphones,
-    chips: ['TELEGRAM', 'Memory'],
+    chips: ['TELEGRAM'],
     preset: {
       provider: 'ANTHROPIC',
       channels: [
         { type: 'TELEGRAM', config: {} }
-      ],
-      memoryEnabled: true
+      ]
     }
   },
   {
     id: 'assistant',
     name: 'Personal Assistant',
-    description: 'Your all-purpose AI companion with web search, scheduling, and memory.',
+    description: 'Your all-purpose AI companion with web search and scheduling.',
     badge: 'Popular',
     icon: User,
-    chips: ['TELEGRAM', 'DISCORD', 'Web Search', 'Memory', 'Scheduling'],
+    chips: ['TELEGRAM', 'DISCORD', 'Web Search', 'Scheduling'],
     preset: {
       provider: 'OPENAI',
       channels: [
@@ -34,7 +33,6 @@ const templates = [
         { type: 'DISCORD', config: {} }
       ],
       webSearchEnabled: true,
-      memoryEnabled: true,
       cronEnabled: true
     }
   },
@@ -43,14 +41,13 @@ const templates = [
     name: 'Discord Community Bot',
     description: 'Engage your Discord community with an AI that answers questions and moderates.',
     icon: Hash,
-    chips: ['DISCORD', 'Web Search', 'Memory'],
+    chips: ['DISCORD', 'Web Search'],
     preset: {
       provider: 'OPENAI',
       channels: [
         { type: 'DISCORD', config: {} }
       ],
-      webSearchEnabled: true,
-      memoryEnabled: true
+      webSearchEnabled: true
     }
   },
   {
