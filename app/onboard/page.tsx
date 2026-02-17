@@ -7,19 +7,17 @@ import { useSession } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Check, Shield, ArrowRight, ArrowLeft, Flame, Terminal, Cpu, MessageSquare, Zap, Sparkles } from 'lucide-react'
+import { Check, Shield, ArrowRight, ArrowLeft, Flame, Terminal, Cpu, MessageSquare, Zap } from 'lucide-react'
 import PlanSelection from '@/components/forms/plan-selection'
 import ProviderConfig from '@/components/forms/provider-config'
 import ChannelSelector from '../../components/forms/channel-selector'
 import SkillsConfig from '@/components/forms/skills-config'
-import TemplateSelection from '@/components/forms/template-selection'
 
 const steps = [
-  { id: 1, name: 'Template', description: 'Choose a starting point', icon: Sparkles },
-  { id: 2, name: 'Choose Plan', description: 'Select your subscription', icon: Flame },
-  { id: 3, name: 'AI Provider', description: 'Configure your AI model', icon: Cpu },
-  { id: 4, name: 'Channels', description: 'Select messaging platforms', icon: MessageSquare },
-  { id: 5, name: 'Skills', description: 'Enable features (optional)', icon: Zap },
+  { id: 1, name: 'Choose Plan', description: 'Select your subscription', icon: Flame },
+  { id: 2, name: 'AI Provider', description: 'Configure your AI model', icon: Cpu },
+  { id: 3, name: 'Channels', description: 'Select messaging platforms', icon: MessageSquare },
+  { id: 4, name: 'Skills', description: 'Enable features (optional)', icon: Zap },
 ]
 
 type ChannelConfig = { type: string; config: Record<string, any> }
@@ -103,7 +101,7 @@ export default function OnboardPage() {
   }, [status, router])
 
   const [config, setConfig] = useState<OnboardConfig>({
-    templateId: 'scratch',
+    templateId: '',
     plan: 'MONTHLY',
     provider: 'ANTHROPIC',
     apiKey: '',
@@ -177,15 +175,6 @@ export default function OnboardPage() {
     }
   }
 
-  const applyTemplate = (templateId: string, preset: Partial<OnboardConfig>) => {
-    setConfig(prev => ({
-      ...prev,
-      templateId,
-      ...preset,
-      channels: Array.isArray(preset.channels) ? preset.channels : prev.channels
-    }))
-  }
-
   const StepIcon = steps[currentStep - 1].icon
 
   return (
@@ -240,7 +229,7 @@ export default function OnboardPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
-            Five steps. Clear choices. We handle the deploy.
+            Four steps. Clear choices. We handle the deploy.
           </motion.p>
         </motion.div>
 
@@ -284,7 +273,7 @@ export default function OnboardPage() {
                     <p className={`font-semibold text-xs sm:text-sm transition-colors duration-300 ${
                       currentStep === step.id ? 'text-red-400' : currentStep > step.id ? 'text-white/60' : 'text-white/30'
                     }`}>{step.name}</p>
-                    <p className="hidden sm:block text-[10px] text-white/25 font-mono">{step.description}</p>
+                    <p className="hidden sm:block text-[10px] text-white/40 font-mono">{step.description}</p>
                   </div>
                 </div>
                 {index < steps.length - 1 && (
@@ -319,14 +308,14 @@ export default function OnboardPage() {
                   <StepIcon className="h-3 w-3" />
                   step {currentStep} — {steps[currentStep - 1].name}
                 </span>
-                <span className="ml-auto text-[9px] font-mono text-white/15">
+                <span className="ml-auto text-[10px] font-mono text-white/30">
                   {currentStep}/{steps.length}
                 </span>
               </div>
 
               <CardHeader>
                 <CardTitle className="text-xl">{steps[currentStep - 1].name}</CardTitle>
-                <CardDescription className="text-white/40 font-mono text-xs">{steps[currentStep - 1].description}</CardDescription>
+                <CardDescription className="text-white/60 font-mono text-xs">{steps[currentStep - 1].description}</CardDescription>
               </CardHeader>
               <CardContent>
                 <AnimatePresence mode="wait" custom={direction}>
@@ -340,30 +329,24 @@ export default function OnboardPage() {
                     transition={{ duration: 0.35, ease: "easeInOut" }}
                   >
                     {currentStep === 1 && (
-                      <TemplateSelection
-                        selectedTemplate={config.templateId}
-                        onSelect={applyTemplate}
-                      />
-                    )}
-                    {currentStep === 2 && (
                       <PlanSelection
                         selectedPlan={config.plan}
                         onSelect={(plan) => updateConfig({ plan })}
                       />
                     )}
-                    {currentStep === 3 && (
+                    {currentStep === 2 && (
                       <ProviderConfig
                         config={config}
                         onChange={updateConfig}
                       />
                     )}
-                    {currentStep === 4 && (
+                    {currentStep === 3 && (
                       <ChannelSelector
                         channels={config.channels}
                         onChange={(channels) => updateConfig({ channels })}
                       />
                     )}
-                    {currentStep === 5 && (
+                    {currentStep === 4 && (
                       <SkillsConfig
                         config={config}
                         onChange={updateConfig}
@@ -389,14 +372,13 @@ export default function OnboardPage() {
               </div>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg">Setup summary</CardTitle>
-                <CardDescription className="text-white/30 font-mono text-xs">Quick glance before checkout.</CardDescription>
+                <CardDescription className="text-white/50 font-mono text-xs">Quick glance before checkout.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
                 {[
-                  { label: 'Template', value: config.templateId?.replace('-', ' '), always: true },
                   { label: 'Plan', value: config.plan, always: true },
-                  { label: 'Provider', value: currentStep >= 3 ? providerLabel : 'Step 3', always: true },
-                  { label: 'Channels', value: currentStep >= 4 ? `${config.channels.length || 0} selected` : 'Step 4', always: true },
+                  { label: 'Provider', value: currentStep >= 2 ? providerLabel : 'Step 2', always: true },
+                  { label: 'Channels', value: currentStep >= 3 ? `${config.channels.length || 0} selected` : 'Step 3', always: true },
                 ].map((item, i) => (
                   <motion.div
                     key={item.label}
@@ -405,7 +387,7 @@ export default function OnboardPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.8 + i * 0.1 }}
                   >
-                    <span className="text-white/30 font-mono text-xs">{item.label}</span>
+                    <span className="text-white/50 font-mono text-xs">{item.label}</span>
                     <span className="font-semibold text-sm capitalize">{item.value}</span>
                   </motion.div>
                 ))}
@@ -413,7 +395,7 @@ export default function OnboardPage() {
                 {/* Progress indicator */}
                 <div className="pt-2">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] text-white/20 font-mono">Progress</span>
+                    <span className="text-[10px] text-white/40 font-mono">Progress</span>
                     <span className="text-[10px] text-red-500/60 font-mono">{Math.round((currentStep / steps.length) * 100)}%</span>
                   </div>
                   <div className="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
@@ -425,7 +407,7 @@ export default function OnboardPage() {
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-red-500/10 bg-white/[0.02] px-3 py-2 text-[10px] text-white/25 font-mono">
+                <div className="rounded-lg border border-red-500/10 bg-white/[0.02] px-3 py-2 text-[10px] text-white/40 font-mono">
                   Your deployment starts after payment and completes in a few minutes.
                 </div>
               </CardContent>
@@ -461,7 +443,7 @@ export default function OnboardPage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
-          <div className="order-last w-full sm:order-none sm:w-auto flex items-center gap-3 text-[10px] text-white/25 font-mono">
+          <div className="order-last w-full sm:order-none sm:w-auto flex items-center gap-3 text-[10px] text-white/40 font-mono">
             <Shield className="h-4 w-4 text-red-500/40" />
             Secure checkout. Cancel any time.
           </div>

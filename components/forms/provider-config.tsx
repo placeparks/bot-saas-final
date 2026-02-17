@@ -42,7 +42,7 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-white/40">{p.description}</p>
+                <p className="text-sm text-white/60">{p.description}</p>
               </Card>
             )
           })}
@@ -54,7 +54,7 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
         <Label htmlFor="apiKey" className="text-lg mb-2 block text-white/90">
           API Key
         </Label>
-        <p className="text-sm text-white/40 mb-3">
+        <p className="text-sm text-white/60 mb-3">
           Your API key is encrypted and never shared. We use it only to run your bot.
         </p>
         <div className="flex gap-2">
@@ -98,7 +98,7 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
         <Label htmlFor="model" className="text-lg mb-2 block text-white/90">
           Model (Optional)
         </Label>
-        <p className="text-sm text-white/40 mb-3">
+        <p className="text-sm text-white/60 mb-3">
           We{"'"}ll use the best model by default. Advanced users can override this.
         </p>
         <select

@@ -49,7 +49,10 @@
       "Bash(npx next build)",
       "WebFetch(domain:deepwiki.com)",
       "WebFetch(domain:blog.laozhang.ai)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(git rebase:*)",
+      "Bash(GIT_EDITOR=true git rebase:*)",
+      "Bash(git -c core.editor=true rebase:*)"
     ]
   }
 }

@@ -164,11 +164,11 @@ export default function DashboardPage() {
               <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
               <div className="w-2.5 h-2.5 rounded-full bg-red-900/30" />
               <div className="w-2.5 h-2.5 rounded-full bg-red-900/30" />
-              <span className="ml-2 text-[9px] font-mono text-red-500/40 uppercase tracking-wider">no-instance</span>
+              <span className="ml-2 text-[10px] font-mono text-red-500/50 uppercase tracking-wider">no-instance</span>
             </div>
             <CardHeader>
               <CardTitle className="text-white">No Instance Found</CardTitle>
-              <CardDescription className="text-white/40 font-mono text-xs">
+              <CardDescription className="text-white/60 font-mono text-xs">
                 You haven{"'"}t deployed your AI agent yet.
               </CardDescription>
             </CardHeader>
@@ -366,15 +366,15 @@ export default function DashboardPage() {
               <Card className="border border-red-500/15 bg-white/[0.02] text-white overflow-hidden">
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-red-500/10 bg-[#0a0a0a]/50">
                   <div className="w-2 h-2 rounded-full bg-red-500/60" />
-                  <span className="text-[9px] font-mono text-red-500/40 uppercase tracking-wider">subscription</span>
+                  <span className="text-[10px] font-mono text-red-500/50 uppercase tracking-wider">subscription</span>
                 </div>
                 <CardContent className="pt-5 space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-white/30 font-mono text-xs">Plan</span>
+                    <span className="text-white/50 font-mono text-xs">Plan</span>
                     <span className="font-semibold text-sm">{subscription?.plan.replace('_', ' ')}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/30 font-mono text-xs">Status</span>
+                    <span className="text-white/50 font-mono text-xs">Status</span>
                     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
                       subscription?.status === 'ACTIVE'
                         ? 'bg-red-500/10 border border-red-500/30 text-red-400'
@@ -406,12 +406,12 @@ export default function DashboardPage() {
               <Card className="border border-red-500/15 bg-white/[0.02] text-white overflow-hidden">
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-red-500/10 bg-[#0a0a0a]/50">
                   <div className="w-2 h-2 rounded-full bg-red-500/60" />
-                  <span className="text-[9px] font-mono text-red-500/40 uppercase tracking-wider">agent-info</span>
+                  <span className="text-[10px] font-mono text-red-500/50 uppercase tracking-wider">agent-info</span>
                 </div>
                 <CardContent className="pt-5">
                   <div className="space-y-3">
                     <div>
-                      <span className="text-[10px] text-white/20 font-mono uppercase tracking-wider">Container ID</span>
+                      <span className="text-[10px] text-white/40 font-mono uppercase tracking-wider">Container ID</span>
                       <div className="flex items-center gap-2 mt-1">
                         <code className="text-xs font-mono text-white/50 bg-white/[0.03] px-2 py-1 rounded border border-red-500/10 flex-1 truncate">
                           {instance.id}
@@ -429,7 +429,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-white/30 font-mono text-xs">Port</span>
+                      <span className="text-white/50 font-mono text-xs">Port</span>
                       <span className="font-mono text-sm text-white/60">{instance.port}</span>
                     </div>
                
@@ -457,7 +457,7 @@ export default function DashboardPage() {
               <Card className="border border-red-500/15 bg-white/[0.02] text-white overflow-hidden">
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-red-500/10 bg-[#0a0a0a]/50">
                   <div className="w-2 h-2 rounded-full bg-red-500/60" />
-                  <span className="text-[9px] font-mono text-red-500/40 uppercase tracking-wider">support</span>
+                  <span className="text-[10px] font-mono text-red-500/50 uppercase tracking-wider">support</span>
                 </div>
                 <CardContent className="pt-5 space-y-3">
                   <a
@@ -469,7 +469,7 @@ export default function DashboardPage() {
                     <Hash className="h-4 w-4 text-red-500/50 group-hover:text-red-400 transition-colors" />
                     <div>
                       <p className="text-sm text-white/70 group-hover:text-white/90 transition-colors">Discord Community</p>
-                      <p className="text-[10px] text-white/25 font-mono">Get help from members</p>
+                      <p className="text-[10px] text-white/40 font-mono">Get help from members</p>
                     </div>
                   </a>
                   <a
@@ -479,7 +479,7 @@ export default function DashboardPage() {
                     <MessageSquare className="h-4 w-4 text-red-500/50 group-hover:text-red-400 transition-colors" />
                     <div>
                       <p className="text-sm text-white/70 group-hover:text-white/90 transition-colors">Contact Support</p>
-                      <p className="text-[10px] text-white/25 font-mono">Direct email support</p>
+                      <p className="text-[10px] text-white/40 font-mono">Direct email support</p>
                     </div>
                   </a>
                 </CardContent>

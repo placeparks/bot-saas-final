@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Globe, Mic, Layout, Clock, Brain, ExternalLink } from 'lucide-react'
+import { Search, Globe, Mic, Layout, Clock, ExternalLink } from 'lucide-react'
 
 const skills = [
   {
@@ -47,13 +47,6 @@ const skills = [
     name: 'Scheduled Tasks',
     icon: Clock,
     description: 'Run tasks on a schedule'
-  },
-  {
-    key: 'memoryEnabled',
-    name: 'Memory & RAG',
-    icon: Brain,
-    description: 'Remember context across conversations',
-    badge: 'Pro'
   }
 ]
 
@@ -67,7 +60,7 @@ export default function SkillsConfig({ config, onChange }: SkillsConfigProps) {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-2 text-white/90">Enable Skills (Optional)</h3>
-        <p className="text-sm text-white/40 font-mono mb-4">
+        <p className="text-sm text-white/60 font-mono mb-4">
           Add extra capabilities to your AI assistant. You can skip this step and enable them later.
         </p>
       </div>
@@ -104,7 +97,7 @@ export default function SkillsConfig({ config, onChange }: SkillsConfigProps) {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-white/40">{skill.description}</p>
+                    <p className="text-sm text-white/60">{skill.description}</p>
                   </div>
                 </div>
 
@@ -144,7 +137,7 @@ export default function SkillsConfig({ config, onChange }: SkillsConfigProps) {
       </div>
 
       <div className="mt-6 p-4 border border-red-500/10 bg-white/[0.02] rounded-lg">
-        <p className="text-sm text-white/35 font-mono">
+        <p className="text-sm text-white/50 font-mono">
           Skills can be enabled or disabled at any time from your dashboard after deployment.
         </p>
       </div>

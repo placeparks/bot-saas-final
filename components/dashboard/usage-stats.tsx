@@ -107,14 +107,14 @@ export default function UsageStats({ instance }: UsageStatsProps) {
               <p className="text-2xl font-bold font-mono">
                 <AnimatedValue value={item.value} />
               </p>
-              <p className="text-[10px] text-white/25 font-mono uppercase tracking-wider mt-1">{item.label}</p>
+              <p className="text-[10px] text-white/40 font-mono uppercase tracking-wider mt-1">{item.label}</p>
             </motion.div>
           ))}
         </div>
 
         <div className="mt-6 pt-5 border-t border-red-500/10">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-white/20 font-mono">
+            <p className="text-xs text-white/40 font-mono">
               {stats ? 'Detailed analytics coming soon' : 'Connect analytics to see real usage'}
             </p>
             <button className="text-xs text-red-400/60 hover:text-red-400 transition-colors font-mono">

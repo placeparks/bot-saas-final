@@ -63,15 +63,15 @@ export default function PlanSelection({ selectedPlan, onSelect }: PlanSelectionP
                 <span className="text-sm text-white/30 font-mono mb-1">{plan.period}</span>
               </div>
               {plan.pricePerMonth && (
-                <p className="text-xs text-white/40 font-mono mt-1">
+                <p className="text-xs text-white/60 font-mono mt-1">
                   ${plan.pricePerMonth}/month
                 </p>
               )}
-              <p className="mt-2 text-xs text-white/40 font-mono">{plan.description}</p>
+              <p className="mt-2 text-xs text-white/60 font-mono">{plan.description}</p>
 
               <div className="mt-6 space-y-2.5">
                 {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-2 text-sm text-white/60">
+                  <div key={feature} className="flex items-center gap-2 text-sm text-white/70">
                     <div className="w-1 h-1 rounded-full bg-red-500" />
                     <span className="font-mono text-xs">{feature}</span>
                   </div>

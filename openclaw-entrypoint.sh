@@ -60,6 +60,23 @@ if [ -n "$_PAIRING_SCRIPT_B64" ]; then
     fi
 fi
 
+# Write SOUL.md (agent name + system prompt) to workspace if provided
+WORKSPACE_DIR="$CONFIG_DIR/workspace"
+mkdir -p "$WORKSPACE_DIR"
+SOUL=""
+if [ -n "$_AGENT_NAME" ]; then
+    SOUL="# $_AGENT_NAME
+
+"
+fi
+if [ -n "$_SYSTEM_PROMPT" ]; then
+    SOUL="${SOUL}$_SYSTEM_PROMPT"
+fi
+if [ -n "$SOUL" ]; then
+    printf '%s' "$SOUL" > "$WORKSPACE_DIR/SOUL.md"
+    echo "[ENTRYPOINT] Wrote SOUL.md (agent: ${_AGENT_NAME:-default})"
+fi
+
 # Start OpenClaw gateway with config (do NOT run doctor --fix, it causes issues)
 echo "[ENTRYPOINT] Starting OpenClaw with config..."
 echo "[ENTRYPOINT] Command: openclaw gateway"

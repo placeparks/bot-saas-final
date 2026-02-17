@@ -143,7 +143,7 @@ export default function InstanceStatus({ instance, onAction, actionLoading }: In
             <h3 className="text-lg font-bold">
               {isOnline ? 'Agent Operational' : 'Agent Offline'}
             </h3>
-            <p className="text-xs text-white/30 font-mono mt-0.5">
+            <p className="text-xs text-white/50 font-mono mt-0.5">
               {isOnline
                 ? 'All systems nominal. Listening on configured channels.'
                 : 'Instance is not responding. Try restarting.'}
@@ -167,7 +167,7 @@ export default function InstanceStatus({ instance, onAction, actionLoading }: In
             >
               <div className="flex items-center gap-2 mb-2">
                 <stat.icon className={`h-3.5 w-3.5 ${stat.active ? 'text-red-500/70' : 'text-white/15'}`} />
-                <span className="text-[10px] text-white/25 font-mono uppercase tracking-wider">{stat.label}</span>
+                <span className="text-[10px] text-white/40 font-mono uppercase tracking-wider">{stat.label}</span>
               </div>
               <p className={`text-sm font-semibold font-mono ${stat.active ? 'text-white/80' : 'text-white/30'}`}>
                 {stat.value}

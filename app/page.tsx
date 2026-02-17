@@ -7,7 +7,7 @@ import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'fra
 import {
   ArrowRight, Shield, Zap, MessageSquare, Terminal, Users, Crown,
   ChevronDown, ExternalLink, Play, Pause, RotateCcw, Cpu, Globe, Lock, Star, Flame,
-  Hash, Activity, Clock, Award, Crosshair, Sparkles, Check, MessageCircle, Bot, Wifi
+  Hash, Activity, Clock, Award, Crosshair, Check, MessageCircle, Bot, Wifi
 } from 'lucide-react'
 
 // ─────────────────────────────────────────────────
@@ -299,20 +299,18 @@ type WalkthroughStep = {
 
 const walkthroughSteps: WalkthroughStep[] = [
   {
-    title: 'STEP 1 — Choose Your Template',
-    icon: Sparkles,
-    duration: 4000,
+    title: 'STEP 1 — Choose Your Plan',
+    icon: Flame,
+    duration: 3500,
     lines: [
-      { text: '$ claw init --interactive', delay: 0 },
+      { text: '$ claw init --subscribe', delay: 0 },
       { text: '', delay: 300 },
-      { text: '  Available templates:', delay: 500 },
-      { text: '    [1] General Assistant — All-purpose AI agent', delay: 800 },
-      { text: '    [2] Discord Bot — Community management & moderation', delay: 1000 },
-      { text: '    [3] Research Agent — Web search & data analysis', delay: 1200 },
-      { text: '    [4] Custom — Build from scratch', delay: 1400 },
-      { text: '', delay: 1600 },
-      { text: '  > Selected: [1] General Assistant', delay: 1900, color: 'text-red-400' },
-      { text: '  ✓ Template loaded. Configuring...', delay: 2400, color: 'text-red-500' },
+      { text: '  Available plans:', delay: 500 },
+      { text: '    [1] Monthly — $35/mo, cancel anytime', delay: 800 },
+      { text: '    [2] Yearly  — $320/yr, save $100 (Best Value)', delay: 1000 },
+      { text: '', delay: 1300 },
+      { text: '  > Selected: [2] Yearly Plan', delay: 1600, color: 'text-red-400' },
+      { text: '  ✓ Plan locked in. Proceeding...', delay: 2200, color: 'text-red-500' },
     ],
   },
   {
@@ -322,15 +320,17 @@ const walkthroughSteps: WalkthroughStep[] = [
     lines: [
       { text: '$ claw config --provider', delay: 0 },
       { text: '', delay: 300 },
-      { text: '  Select AI Provider:', delay: 500 },
+      { text: '  10 providers available:', delay: 500 },
       { text: '    [1] Anthropic Claude (Recommended)', delay: 700 },
-      { text: '    [2] OpenAI GPT-4', delay: 900 },
-      { text: '    [3] Custom / OpenAI-compatible', delay: 1100 },
-      { text: '', delay: 1300 },
-      { text: '  > Provider: Anthropic Claude', delay: 1600, color: 'text-red-400' },
-      { text: '  > Model: claude-sonnet-4-5-20250929', delay: 2000, color: 'text-red-400' },
-      { text: '  > API Key: sk-ant-••••••••••••••••', delay: 2400, color: 'text-white/40' },
-      { text: '  ✓ Provider configured. Key encrypted.', delay: 3000, color: 'text-red-500' },
+      { text: '    [2] OpenAI GPT / o-series', delay: 900 },
+      { text: '    [3] Google Gemini', delay: 1050 },
+      { text: '    [4] xAI Grok / Groq / Mistral / DeepSeek', delay: 1200 },
+      { text: '    [5] OpenRouter — 200+ models', delay: 1350 },
+      { text: '', delay: 1500 },
+      { text: '  > Provider: Anthropic Claude', delay: 1800, color: 'text-red-400' },
+      { text: '  > Model: claude-sonnet-4-5-20250929', delay: 2200, color: 'text-red-400' },
+      { text: '  > API Key: sk-ant-••••••••••••••••', delay: 2600, color: 'text-white/40' },
+      { text: '  ✓ Provider configured. Key encrypted.', delay: 3200, color: 'text-red-500' },
     ],
   },
   {
@@ -343,8 +343,8 @@ const walkthroughSteps: WalkthroughStep[] = [
       { text: '  Available channels:', delay: 500 },
       { text: '    [✓] Discord — Bot token ready', delay: 800, color: 'text-red-400' },
       { text: '    [✓] Telegram — Bot API connected', delay: 1100, color: 'text-red-400' },
-      { text: '    [ ] Slack — Coming soon', delay: 1400, color: 'text-white/20' },
-      { text: '    [ ] WhatsApp — Coming soon', delay: 1600, color: 'text-white/20' },
+      { text: '    [ ] WhatsApp — QR pairing', delay: 1400, color: 'text-white/40' },
+      { text: '    [ ] Slack / Signal / Matrix', delay: 1600, color: 'text-white/40' },
       { text: '', delay: 1900 },
       { text: '  ✓ 2 channels configured.', delay: 2300, color: 'text-red-500' },
     ],
@@ -371,26 +371,6 @@ const walkthroughSteps: WalkthroughStep[] = [
       { label: 'Gateway', value: 'https://s48.clawclub.io', color: 'text-white/60' },
       { label: 'Status', value: 'ONLINE', color: 'text-red-500' },
       { label: 'Deploy Time', value: '4m 12s', color: 'text-white/60' },
-    ],
-  },
-  {
-    title: 'STEP 5 — Agent Is Live',
-    icon: Wifi,
-    duration: 5000,
-    lines: [
-      { text: '$ claw status --live', delay: 0 },
-      { text: '', delay: 300 },
-      { text: '  ┌─────────────────────────────────────┐', delay: 500 },
-      { text: '  │  AGENT: SENTINEL-48    STATUS: ● ON │', delay: 700, color: 'text-red-400' },
-      { text: '  ├─────────────────────────────────────┤', delay: 900 },
-      { text: '  │  Discord:  ● Connected   #general   │', delay: 1100, color: 'text-red-400' },
-      { text: '  │  Telegram: ● Connected   @mybot     │', delay: 1300, color: 'text-red-400' },
-      { text: '  │  Uptime:   99.9%        Tasks: 0    │', delay: 1500 },
-      { text: '  │  Memory:   128MB / 512MB             │', delay: 1700 },
-      { text: '  └─────────────────────────────────────┘', delay: 1900 },
-      { text: '', delay: 2200 },
-      { text: '  Your agent is live and listening.', delay: 2500, color: 'text-red-500' },
-      { text: '  Try messaging it on Discord or Telegram!', delay: 3000, color: 'text-red-400' },
     ],
   },
 ]
@@ -521,7 +501,7 @@ function WalkthroughDemo() {
               </div>
             </motion.button>
             <p className="mt-4 text-xs font-mono text-white/25">Click to start the walkthrough</p>
-            <p className="mt-1 text-[10px] font-mono text-white/15">5 steps — Full deploy demo</p>
+            <p className="mt-1 text-[10px] font-mono text-white/15">4 steps — Full deploy demo</p>
           </div>
         )}
 
@@ -627,7 +607,7 @@ function WalkthroughDemo() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Walkthrough Complete</h3>
                 <p className="text-xs font-mono text-white/35 mb-6 max-w-xs">
-                  That{"'"}s it. 5 steps, under 5 minutes. Your AI agent is live and listening.
+                  That{"'"}s it. 4 steps, under 5 minutes. Your AI agent is live and listening.
                 </p>
                 <div className="flex items-center gap-3 justify-center">
                   <button
@@ -693,8 +673,8 @@ export default function Home() {
   const features = [
     { icon: Zap, title: 'One-Click Deploy', desc: 'Your private AI agent spins up in under 5 minutes. No terminals. No DevOps. Just click.' },
     { icon: Shield, title: 'Vault-Grade Security', desc: 'Every agent runs in an isolated container. Keys are encrypted. Nothing leaks.' },
-    { icon: MessageSquare, title: 'Channel Ready', desc: 'Wire your agent to Telegram and Discord instantly. One config, always connected.' },
-    { icon: Cpu, title: 'Multi-Model AI', desc: 'Bring your own API key — Anthropic Claude, OpenAI GPT, or any compatible provider.' },
+    { icon: MessageSquare, title: 'Multi-Channel', desc: 'Connect Discord, Telegram, WhatsApp, Slack, Signal, and Matrix. One agent, all your channels.' },
+    { icon: Cpu, title: 'Multi-Model AI', desc: 'Bring your own API key — 10+ providers including Claude, GPT, Gemini, Grok, DeepSeek, Mistral, and OpenRouter.' },
     { icon: Globe, title: 'Web Search & Browser', desc: 'Your agent can search the web, browse pages, and pull live data autonomously.' },
     { icon: Lock, title: 'Private Gateway', desc: 'Each member gets a dedicated gateway with auth tokens. Your scope, your rules.' },
   ]
@@ -715,14 +695,14 @@ export default function Home() {
   ]
 
   const faqs = [
-    { q: '> What exactly is Claw Club?', a: 'Claw Club is a premium, members-only service that deploys private AI agents for you. You get a fully managed OpenClaw instance connected to your channels — Discord, Telegram, and more.' },
-    { q: '> Do I need any technical knowledge?', a: 'Zero. We handle all the infrastructure. You choose your AI provider, pick your channels, and we deploy everything. The whole setup takes under 5 minutes.' },
-    { q: '> What AI models can I use?', a: 'Any OpenAI-compatible or Anthropic model. Bring your own API key — Claude, GPT-4, or others. We support swapping models at any time.' },
+    { q: '> What exactly is Claw Club?', a: 'Claw Club is a premium, members-only service that deploys private AI agents for you. You get a fully managed OpenClaw instance connected to your channels — Discord, Telegram, WhatsApp, Slack, and more.' },
+    { q: '> Do I need any technical knowledge?', a: 'Zero. We handle all the infrastructure. Choose your plan, pick an AI provider, configure your channels, and we deploy everything. Four steps, under 5 minutes.' },
+    { q: '> What AI models can I use?', a: 'We support 10+ providers: Anthropic Claude, OpenAI GPT & o-series, Google Gemini, xAI Grok, Groq, Mistral, DeepSeek, Cerebras, Venice, and OpenRouter (200+ models). Bring your own API key and swap models anytime.' },
     { q: '> Is my data private?', a: 'Absolutely. Each member runs in a fully isolated container with encrypted keys. We never see or store your API keys or conversations.' },
     { q: '> Can I cancel anytime?', a: 'Yes. Cancel from your dashboard — no questions, no lock-in. We also offer a 7-day money-back guarantee.' },
     { q: '> How do member spots work?', a: 'We cap the total number of active members to keep infrastructure quality high. Once spots fill up, new signups go on a waitlist. Early members lock in their pricing permanently.' },
-    { q: '> What channels are supported?', a: 'Currently Telegram and Discord. More channels are being built — Slack, WhatsApp, and Matrix are on the roadmap.' },
-    { q: '> Any hidden fees?', a: 'None from us. Your only other cost is your AI provider API key (billed directly by them, like OpenAI or Anthropic). Our pricing is flat and transparent.' },
+    { q: '> What channels are supported?', a: 'Discord, Telegram, WhatsApp (QR pairing), Slack, Signal, Google Chat, and Matrix. Connect multiple channels to the same agent simultaneously.' },
+    { q: '> Any hidden fees?', a: 'None from us. Your only other cost is your AI provider API key (billed directly by them). Our pricing is flat and transparent.' },
   ]
 
   return (
@@ -795,8 +775,8 @@ export default function Home() {
                 transition={{ delay: 0.7, duration: 0.6 }}
                 className="mt-6 text-lg sm:text-xl text-white/50 font-mono max-w-xl mx-auto"
               >
-                The ultimate OpenClaw resource hub.
-                Join the club that runs 24/7 autonomous agents.
+                Deploy your own private AI agent in minutes.
+                Powered by OpenClaw. Running 24/7. Your keys, your rules.
               </motion.p>
 
               <motion.div
@@ -1231,7 +1211,7 @@ export default function Home() {
                 <h2 className="text-4xl sm:text-5xl font-bold">
                   What{"'"}s <span className="text-red-500">On Offer</span>
                 </h2>
-                <p className="mt-4 text-white/40 font-mono text-sm">Watch a full deploy walkthrough — from template to live agent.</p>
+                <p className="mt-4 text-white/40 font-mono text-sm">Watch a full deploy walkthrough — from plan selection to live agent.</p>
               </div>
 
               <WalkthroughDemo />
