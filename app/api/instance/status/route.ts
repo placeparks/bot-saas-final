@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getProvider } from '@/lib/deploy'
+import { RailwayClient } from '@/lib/railway/client'
+import { parseLogsForStats } from '@/lib/openclaw/log-parser'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -51,6 +53,21 @@ export async function GET(req: Request) {
     // Check instance health
     const isHealthy = await getProvider().checkHealth(user.instance.id)
 
+    // Fetch usage stats from OpenClaw logs (best-effort, don't block on failure)
+    let stats = null
+    try {
+      if (user.instance.containerId) {
+        const railway = new RailwayClient()
+        const deployment = await railway.getLatestDeployment(user.instance.containerId)
+        if (deployment) {
+          const logs = await railway.getLogs(deployment.id, 500)
+          stats = parseLogsForStats(logs, deployment.createdAt)
+        }
+      }
+    } catch (err) {
+      console.warn('Stats fetch failed (non-fatal):', err)
+    }
+
     return NextResponse.json({
       hasInstance: true,
       instance: {
@@ -61,7 +78,8 @@ export async function GET(req: Request) {
         qrCode: user.instance.qrCode,
         lastHealthCheck: user.instance.lastHealthCheck,
         isHealthy,
-        channels: user.instance.config?.channels || []
+        channels: user.instance.config?.channels || [],
+        stats,
       },
       subscription: user.subscription
     })
