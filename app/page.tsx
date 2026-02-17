@@ -870,17 +870,16 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
                 {[
                   { name: 'Monthly', price: '$29', period: '/mo', desc: 'Try it out. Cancel anytime.', features: ['All features', 'Telegram + Discord', 'Unlimited messages', 'Web search & browser', 'Community access'] },
-                  { name: '3 Months', price: '$75', period: '/3mo', desc: 'Most popular. Save $12.', badge: 'POPULAR', features: ['Everything in Monthly', 'Priority support', 'Early feature access', 'Save $12 total', 'Price locked'] },
-                  { name: 'Yearly', price: '$299', period: '/yr', desc: 'Best value. Serious members.', badge: 'BEST VALUE', features: ['Everything in 3-Month', 'Dedicated support channel', 'Custom agent templates', 'Save $49 annually', 'Founding member perks'] },
+                  { name: 'Yearly', price: '$299', period: '/yr', desc: 'Best value. Save $49.', badge: 'BEST VALUE', popular: true, features: ['Everything in Monthly', 'Priority support', 'Dedicated support channel', 'Save $49 annually', 'Founding member perks'] },
                 ].map((plan, i) => (
                   <motion.div
                     key={plan.name}
                     whileHover={{ y: -4, borderColor: 'rgba(220, 38, 38, 0.6)' }}
                     className={`relative rounded-xl border ${
-                      i === 1 ? 'border-red-500/50 bg-red-500/[0.04]' : 'border-red-500/15 bg-white/[0.02]'
+                      plan.popular ? 'border-red-500/50 bg-red-500/[0.04]' : 'border-red-500/15 bg-white/[0.02]'
                     } p-6 transition-all duration-300`}
                   >
                     {plan.badge && (
