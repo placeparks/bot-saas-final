@@ -24,9 +24,8 @@ const bootLines = [
   { text: '  [OK] /vault/keys — 256-bit AES', delay: 1400 },
   { text: '  [OK] /vault/agents — isolated sandbox', delay: 1550 },
   { text: '> Connecting to Claw Club network...', delay: 1750 },
-  { text: '  [ACTIVE] 47 agents online', delay: 1950 },
-  { text: '  [ACTIVE] 12 new members this week', delay: 2100 },
-  { text: '  [ACTIVE] Discord community: LIVE', delay: 2250 },
+  { text: '  [ACTIVE] agents online', delay: 1950 },
+  { text: '  [ACTIVE] network operational', delay: 2100 },
   { text: '> Verifying member credentials...', delay: 2450 },
   { text: '  [OK] Claw Club gateway — ENABLED', delay: 2650 },
   { text: '> All systems operational.', delay: 2850 },
@@ -679,13 +678,20 @@ export default function Home() {
     { icon: Lock, title: 'Private Gateway', desc: 'Each member gets a dedicated gateway with auth tokens. Your scope, your rules.' },
   ]
 
-  const activeAgents = [
-    { name: 'SENTINEL-7', status: 'online', uptime: '99.9%', tasks: '2.4k', channel: 'Discord' },
-    { name: 'PHANTOM-X', status: 'online', uptime: '99.7%', tasks: '1.8k', channel: 'Telegram' },
-    { name: 'SPECTER-3', status: 'online', uptime: '99.8%', tasks: '3.1k', channel: 'Discord' },
-    { name: 'WRAITH-11', status: 'idle', uptime: '99.5%', tasks: '967', channel: 'Telegram' },
-    { name: 'VIPER-9', status: 'online', uptime: '99.9%', tasks: '4.2k', channel: 'Discord' },
-  ]
+  const [activeAgents, setActiveAgents] = useState<{ name: string; status: string; uptime: string; channel: string }[]>([])
+  const [agentCount, setAgentCount] = useState(0)
+
+  useEffect(() => {
+    fetch('/api/public/agents')
+      .then(res => res.json())
+      .then(data => {
+        if (data.agents?.length > 0) {
+          setActiveAgents(data.agents)
+          setAgentCount(data.total)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const teamMembers = [
     { name: 'RedClaw', role: 'Founder & Lead', desc: 'Built the infrastructure from scratch. Former security engineer.' },
@@ -936,75 +942,77 @@ export default function Home() {
           <div className="red-line" />
 
           {/* ═══════════════════════════════════════
-              ACTIVE AGENTS
+              ACTIVE AGENTS (only shown when real agents exist)
               ═══════════════════════════════════════ */}
-          <Section className="py-20 sm:py-28 px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-14">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-mono uppercase tracking-[0.3em] mb-4">
-                  <Activity className="h-3 w-3" /> Live Network
+          {activeAgents.length > 0 && (
+            <>
+            <Section className="py-20 sm:py-28 px-6">
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-14">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-mono uppercase tracking-[0.3em] mb-4">
+                    <Activity className="h-3 w-3" /> Live Network
+                  </div>
+                  <h2 className="text-4xl sm:text-5xl font-bold">
+                    {agentCount} Active <span className="text-red-500">{agentCount === 1 ? 'Agent' : 'Agents'}</span>
+                  </h2>
+                  <p className="mt-4 text-white/40 font-mono text-sm">Real agents. Real uptime. Running right now.</p>
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-bold">
-                  Active <span className="text-red-500">Agents</span>
-                </h2>
-                <p className="mt-4 text-white/40 font-mono text-sm">Real agents. Real uptime. Running right now.</p>
-              </div>
 
-              <div className="terminal-window p-0 overflow-hidden">
-                <div className="terminal-header">
-                  <div className="terminal-dot bg-red-500" />
-                  <div className="terminal-dot bg-red-900/50" />
-                  <div className="terminal-dot bg-red-900/50" />
-                  <span className="ml-2 text-[10px] font-mono text-red-500/50 uppercase tracking-wider">agent-monitor</span>
-                </div>
-                <div className="p-1">
-                  <table className="w-full text-xs font-mono">
-                    <thead>
-                      <tr className="text-red-500/50 uppercase tracking-wider">
-                        <th className="text-left p-3">Agent</th>
-                        <th className="text-left p-3 hidden sm:table-cell">Status</th>
-                        <th className="text-left p-3 hidden md:table-cell">Uptime</th>
-                        <th className="text-left p-3">Tasks</th>
-                        <th className="text-left p-3 hidden sm:table-cell">Channel</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {activeAgents.map((agent, i) => (
-                        <motion.tr
-                          key={agent.name}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                          className="border-t border-red-500/10 hover:bg-red-500/[0.03] transition-colors"
-                        >
-                          <td className="p-3 text-white/80">{agent.name}</td>
-                          <td className="p-3 hidden sm:table-cell">
-                            <span className="inline-flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${agent.status === 'online' ? 'bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.6)]' : 'bg-yellow-500/60'}`} />
-                              <span className={agent.status === 'online' ? 'text-red-400' : 'text-yellow-400/60'}>{agent.status}</span>
-                            </span>
-                          </td>
-                          <td className="p-3 text-white/40 hidden md:table-cell">{agent.uptime}</td>
-                          <td className="p-3 text-white/40">{agent.tasks}</td>
-                          <td className="p-3 text-white/40 hidden sm:table-cell">{agent.channel}</td>
-                        </motion.tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="px-4 py-3 border-t border-red-500/10 flex items-center justify-between text-[10px] font-mono text-red-500/40">
-                  <span>CLUSTER: us-east-1 | LOAD: nominal</span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                    LIVE
-                  </span>
+                <div className="terminal-window p-0 overflow-hidden">
+                  <div className="terminal-header">
+                    <div className="terminal-dot bg-red-500" />
+                    <div className="terminal-dot bg-red-900/50" />
+                    <div className="terminal-dot bg-red-900/50" />
+                    <span className="ml-2 text-[10px] font-mono text-red-500/50 uppercase tracking-wider">agent-monitor</span>
+                  </div>
+                  <div className="p-1">
+                    <table className="w-full text-xs font-mono">
+                      <thead>
+                        <tr className="text-red-500/50 uppercase tracking-wider">
+                          <th className="text-left p-3">Agent</th>
+                          <th className="text-left p-3 hidden sm:table-cell">Status</th>
+                          <th className="text-left p-3 hidden md:table-cell">Uptime</th>
+                          <th className="text-left p-3 hidden sm:table-cell">Channel</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {activeAgents.map((agent, i) => (
+                          <motion.tr
+                            key={agent.name}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="border-t border-red-500/10 hover:bg-red-500/[0.03] transition-colors"
+                          >
+                            <td className="p-3 text-white/80">{agent.name}</td>
+                            <td className="p-3 hidden sm:table-cell">
+                              <span className="inline-flex items-center gap-1.5">
+                                <span className={`w-1.5 h-1.5 rounded-full ${agent.status === 'online' ? 'bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.6)]' : 'bg-yellow-500/60'}`} />
+                                <span className={agent.status === 'online' ? 'text-red-400' : 'text-yellow-400/60'}>{agent.status}</span>
+                              </span>
+                            </td>
+                            <td className="p-3 text-white/40 hidden md:table-cell">{agent.uptime}</td>
+                            <td className="p-3 text-white/40 hidden sm:table-cell">{agent.channel}</td>
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="px-4 py-3 border-t border-red-500/10 flex items-center justify-between text-[10px] font-mono text-red-500/40">
+                    <span>{agentCount} agent{agentCount !== 1 ? 's' : ''} active</span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                      LIVE
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Section>
+            </Section>
 
-          <div className="red-line" />
+            <div className="red-line" />
+            </>
+          )}
 
           {/* ═══════════════════════════════════════
               KEY HUMAN MEMBERS
