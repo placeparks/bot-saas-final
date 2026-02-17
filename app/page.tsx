@@ -872,8 +872,8 @@ export default function Home() {
 
               <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
                 {[
-                  { name: 'Monthly', price: '$29', period: '/mo', desc: 'Try it out. Cancel anytime.', features: ['All features', 'Telegram + Discord', 'Unlimited messages', 'Web search & browser', 'Community access'] },
-                  { name: 'Yearly', price: '$299', period: '/yr', desc: 'Best value. Save $49.', badge: 'BEST VALUE', popular: true, features: ['Everything in Monthly', 'Priority support', 'Dedicated support channel', 'Save $49 annually', 'Founding member perks'] },
+                  { name: 'Monthly', price: '$35', period: '/mo', desc: 'Try it out. Cancel anytime.', features: ['All features', 'Telegram + Discord', 'Unlimited messages', 'Web search & browser', 'Community access'] },
+                  { name: 'Yearly', price: '$320', period: '/yr', desc: 'Best value. Save $49.', badge: 'BEST VALUE', popular: true, features: ['Everything in Monthly', 'Priority support', 'Dedicated support channel', 'Save $49 annually', 'Founding member perks'] },
                 ].map((plan, i) => (
                   <motion.div
                     key={plan.name}
