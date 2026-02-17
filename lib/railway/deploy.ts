@@ -8,6 +8,7 @@ import {
 } from '@/lib/openclaw/config-builder'
 import { InstanceStatus } from '@prisma/client'
 import { randomUUID } from 'crypto'
+import { getProviderEnvVar } from '@/lib/models'
 
 // Use custom wrapper image with our entrypoint baked in
 // Set OPENCLAW_IMAGE env var to override (format: ghcr.io/owner/repo/openclaw-wrapper:latest)
@@ -123,6 +124,8 @@ export function buildStartScript(): string {
   const openclawCmd = process.env.OPENCLAW_CMD || 'openclaw'
   const configDir = '/tmp/.openclaw'
 
+  const workspaceDir = `${configDir}/workspace`
+
   return [
     '#!/bin/sh',
     'set -e',
@@ -130,7 +133,13 @@ export function buildStartScript(): string {
     'if [ ! -x "$OPENCLAW_BIN" ]; then OPENCLAW_BIN="$(command -v openclaw 2>/dev/null || true)"; fi',
     'if [ ! -x "$OPENCLAW_BIN" ]; then echo "OpenClaw binary not found (PATH=$PATH)"; exit 1; fi',
     `mkdir -p ${configDir}`,
+    `mkdir -p ${workspaceDir}`,
     `printf '%s' "$OPENCLAW_CONFIG" > ${configDir}/openclaw.json`,
+    // Write SOUL.md from agent name + system prompt env vars
+    'SOUL=""',
+    'if [ -n "$_AGENT_NAME" ]; then SOUL="# $_AGENT_NAME\\n\\n"; fi',
+    'if [ -n "$_SYSTEM_PROMPT" ]; then SOUL="${SOUL}$_SYSTEM_PROMPT"; fi',
+    `if [ -n "$SOUL" ]; then printf '%b' "$SOUL" > ${workspaceDir}/SOUL.md; fi`,
     `printf '%s' "$_PAIRING_SCRIPT_B64" | base64 -d > /tmp/pairing-server.js`,
     'node /tmp/pairing-server.js &',
     'sleep 1',
@@ -304,12 +313,10 @@ function validateOpenClawEnv(
     errors.push('OPENCLAW_CONFIG is missing or too small')
   }
 
-  if (config.provider === 'OPENAI' && !envVars.OPENAI_API_KEY) {
-    errors.push('OPENAI_API_KEY is missing')
-  }
-
-  if (config.provider === 'ANTHROPIC' && !envVars.ANTHROPIC_API_KEY) {
-    errors.push('ANTHROPIC_API_KEY is missing')
+  // Check that the provider's API key env var is set
+  const expectedEnvVar = getProviderEnvVar(config.provider)
+  if (!envVars[expectedEnvVar]) {
+    errors.push(`${expectedEnvVar} is missing for provider ${config.provider}`)
   }
 
   const hasTelegram = config.channels.some(c => c.type === 'TELEGRAM' && c.config.botToken)
