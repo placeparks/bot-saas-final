@@ -15,6 +15,23 @@ const OPENCLAW_IMAGE = process.env.OPENCLAW_IMAGE || 'ghcr.io/placeparks/bot-saa
 // Import pairing server script + start command builders from existing code
 import { PAIRING_SCRIPT_B64, buildStartScript, buildRailwayStartCommand } from '@/lib/railway/deploy'
 
+/** Build a start command that writes SOUL.md then runs the original entrypoint. */
+function buildWrapperStartCommand(): string {
+  // This runs BEFORE the entrypoint; writes SOUL.md from env vars then execs entrypoint
+  return [
+    '/bin/bash -c \'',
+    'CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}";',
+    'WORKSPACE_DIR="$CONFIG_DIR/workspace";',
+    'mkdir -p "$WORKSPACE_DIR";',
+    'SOUL="";',
+    'if [ -n "$_AGENT_NAME" ]; then SOUL="# $_AGENT_NAME\n\n"; fi;',
+    'if [ -n "$_SYSTEM_PROMPT" ]; then SOUL="${SOUL}$_SYSTEM_PROMPT"; fi;',
+    'if [ -n "$SOUL" ]; then printf "%b" "$SOUL" > "$WORKSPACE_DIR/SOUL.md"; echo "[STARTUP] Wrote SOUL.md"; fi;',
+    'exec /usr/local/bin/openclaw-entrypoint.sh',
+    '\'',
+  ].join(' ')
+}
+
 export class RailwayProvider implements DeploymentProvider {
 
   private async getInstanceWithContainerId(instanceId: string) {
@@ -84,6 +101,11 @@ export class RailwayProvider implements DeploymentProvider {
 
       // Create Railway service
       const { id: serviceId } = await railway.createService(serviceName, OPENCLAW_IMAGE, envVars)
+
+      // Set start command that writes SOUL.md before calling original entrypoint
+      await railway.updateServiceInstance(serviceId, {
+        startCommand: buildWrapperStartCommand(),
+      })
 
       await prisma.instance.update({
         where: { id: instance.id },
@@ -219,6 +241,11 @@ export class RailwayProvider implements DeploymentProvider {
 
     // Update env vars on Railway
     await railway.setVariables(instance.containerId, envVars)
+
+    // Ensure start command writes SOUL.md
+    await railway.updateServiceInstance(instance.containerId, {
+      startCommand: buildWrapperStartCommand(),
+    })
 
     // Redeploy to apply changes
     await railway.redeployService(instance.containerId)
