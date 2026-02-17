@@ -203,12 +203,31 @@ export class RailwayProvider implements DeploymentProvider {
       const instance = await this.getInstanceWithContainerId(instanceId)
       const railway = new RailwayClient()
       const deployment = await railway.getLatestDeployment(instance.containerId)
-      const isHealthy = deployment?.status === 'SUCCESS'
+
+      const deployStatus = deployment?.status?.toUpperCase() || ''
+      const isHealthy = deployStatus === 'SUCCESS'
+      const isTransient = ['BUILDING', 'DEPLOYING', 'INITIALIZING', 'WAITING', 'REMOVING'].includes(deployStatus)
+
+      // Only mark ERROR for truly failed states, not transient ones
+      let newStatus: InstanceStatus
+      if (isHealthy) {
+        newStatus = InstanceStatus.RUNNING
+      } else if (isTransient) {
+        newStatus = instance.status === InstanceStatus.RESTARTING
+          ? InstanceStatus.RESTARTING
+          : InstanceStatus.DEPLOYING
+      } else if (deployStatus === 'FAILED' || deployStatus === 'CRASHED') {
+        newStatus = InstanceStatus.ERROR
+      } else {
+        // Unknown status — keep current status, don't flip to ERROR
+        newStatus = instance.status
+      }
+
       await prisma.instance.update({
         where: { id: instanceId },
         data: {
           lastHealthCheck: new Date(),
-          status: isHealthy ? InstanceStatus.RUNNING : InstanceStatus.ERROR,
+          status: newStatus,
         },
       })
       return isHealthy
