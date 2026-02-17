@@ -249,11 +249,13 @@ export function buildStartScript(): string {
     `mkdir -p ${configDir}`,
     `mkdir -p ${workspaceDir}`,
     `printf '%s' "$OPENCLAW_CONFIG" > ${configDir}/openclaw.json`,
+    // Write IDENTITY.md with agent name
+    `if [ -n "$_AGENT_NAME" ]; then printf '# Identity\\n\\nname: %s\\n' "$_AGENT_NAME" > ${workspaceDir}/IDENTITY.md; echo "[STARTUP] Wrote IDENTITY.md: $_AGENT_NAME"; fi`,
     // Write SOUL.md from agent name + system prompt env vars
     'SOUL=""',
     'if [ -n "$_AGENT_NAME" ]; then SOUL="# $_AGENT_NAME\\n\\n"; fi',
     'if [ -n "$_SYSTEM_PROMPT" ]; then SOUL="${SOUL}$_SYSTEM_PROMPT"; fi',
-    `if [ -n "$SOUL" ]; then printf '%b' "$SOUL" > ${workspaceDir}/SOUL.md; fi`,
+    `if [ -n "$SOUL" ]; then printf '%b' "$SOUL" > ${workspaceDir}/SOUL.md; echo "[STARTUP] Wrote SOUL.md"; fi`,
     `printf '%s' "$_PAIRING_SCRIPT_B64" | base64 -d > /tmp/pairing-server.js`,
     'node /tmp/pairing-server.js &',
     'sleep 1',
