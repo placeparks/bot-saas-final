@@ -17,14 +17,24 @@ interface ProviderConfigProps {
 export default function ProviderConfig({ config, onChange }: ProviderConfigProps) {
   const [showApiKey, setShowApiKey] = useState(false)
   const [modelOpen, setModelOpen] = useState(false)
-  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 })
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0, openUp: false })
   const triggerRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const maxDropdownH = 240 // max-h-60 = 15rem = 240px
 
   const updatePosition = useCallback(() => {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
-      setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width })
+      const spaceBelow = window.innerHeight - rect.bottom
+      const spaceAbove = rect.top
+      const openUp = spaceBelow < maxDropdownH && spaceAbove > spaceBelow
+      setDropdownPos({
+        top: openUp ? rect.top - 4 : rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+        openUp,
+      })
     }
   }, [])
 
@@ -156,7 +166,13 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
             <div
               ref={dropdownRef}
               className="fixed z-[9999] max-h-60 overflow-auto rounded-md border border-red-500/20 bg-[#0a0a0a] shadow-lg shadow-black/50"
-              style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width }}
+              style={{
+                left: dropdownPos.left,
+                width: dropdownPos.width,
+                ...(dropdownPos.openUp
+                  ? { bottom: window.innerHeight - dropdownPos.top, top: 'auto' }
+                  : { top: dropdownPos.top }),
+              }}
             >
               <div
                 className={`px-3 py-2 text-sm cursor-pointer flex items-center justify-between transition-colors ${
