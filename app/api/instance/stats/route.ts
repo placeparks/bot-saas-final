@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { RailwayClient } from '@/lib/railway/client'
-import { parseLogsForStats } from '@/lib/openclaw/log-parser'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -20,20 +18,21 @@ export async function GET(req: Request) {
       include: { instance: true },
     })
 
-    if (!user?.instance?.containerId) {
+    if (!user?.instance?.accessUrl) {
       return NextResponse.json({ stats: null })
     }
 
-    const railway = new RailwayClient()
-    const deployment = await railway.getLatestDeployment(user.instance.containerId)
+    const statsUrl = `${user.instance.accessUrl}/stats`
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 5000)
+    const res = await fetch(statsUrl, { signal: controller.signal })
+    clearTimeout(timeout)
 
-    if (!deployment) {
+    if (!res.ok) {
       return NextResponse.json({ stats: null })
     }
 
-    const logs = await railway.getLogs(deployment.id, 500)
-    const stats = parseLogsForStats(logs, deployment.createdAt)
-
+    const stats = await res.json()
     return NextResponse.json({ stats })
   } catch (error: any) {
     console.error('Stats fetch error:', error)
