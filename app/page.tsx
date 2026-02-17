@@ -804,18 +804,12 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="mt-16 grid grid-cols-3 gap-4 max-w-md mx-auto"
+                className="mt-16"
               >
-                {[
-                  { label: 'Deploy Time', value: '<5 min' },
-                  { label: 'Active Agents', value: '47+' },
-                  { label: 'Uptime', value: '99.9%' },
-                ].map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <div className="text-2xl sm:text-3xl font-bold text-red-500 font-mono">{stat.value}</div>
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-white/30 mt-1 font-mono">{stat.label}</div>
-                  </div>
-                ))}
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-red-500 font-mono">{"<"}5 min</div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-white/30 mt-1 font-mono">Deploy Time</div>
+                </div>
               </motion.div>
             </div>
 
@@ -897,75 +891,11 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* FOMO ticker */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="mt-10 text-center"
-              >
-                <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-red-500/20 bg-red-500/[0.03]">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-xs font-mono text-red-400/80">
-                    <AnimatedCounter target={23} /> spots remaining out of 100 —
-                    <span className="text-white/60"> 12 joined this week</span>
-                  </span>
-                </div>
-              </motion.div>
             </div>
           </Section>
 
           <div className="red-line" />
 
-          {/* ═══════════════════════════════════════
-              DISCORD COMMUNITY
-              ═══════════════════════════════════════ */}
-          <Section className="py-20 sm:py-28 px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="relative rounded-xl border border-red-500/20 bg-gradient-to-br from-red-500/[0.06] via-[#0a0a0a] to-[#050505] p-8 sm:p-12 overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-red-500/5 blur-[80px]" />
-                <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                        <Hash className="h-5 w-5 text-red-500" />
-                      </div>
-                      <span className="font-mono text-xs text-red-500/60 uppercase tracking-[0.3em]">Community</span>
-                    </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold">
-                      Join The <span className="text-red-500">Discord</span>
-                    </h2>
-                    <p className="mt-3 text-white/40 font-mono text-sm leading-relaxed max-w-md">
-                      Connect with other Claw Club members. Share agent configs,
-                      get instant support, access exclusive drops, and shape what we build next.
-                    </p>
-                    <div className="mt-6 flex items-center gap-6 text-xs font-mono text-white/30">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500" />
-                        <AnimatedCounter target={183} suffix=" online" />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Users className="h-3 w-3 text-red-500/50" />
-                        <AnimatedCounter target={412} suffix=" members" />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <a
-                      href="https://discord.gg/clawclub"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white px-8 py-3.5 rounded-lg font-semibold transition-all duration-300 shadow-[0_0_30px_rgba(220,38,38,0.2)] hover:shadow-[0_0_40px_rgba(220,38,38,0.4)]"
-                    >
-                      Join Discord <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Section>
-
-          <div className="red-line" />
 
           {/* ═══════════════════════════════════════
               FEATURES
@@ -1116,88 +1046,6 @@ export default function Home() {
 
           <div className="red-line" />
 
-          {/* ═══════════════════════════════════════
-              HOW MEMBER SPOTS WORK
-              ═══════════════════════════════════════ */}
-          <Section className="py-20 sm:py-28 px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-14">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-mono uppercase tracking-[0.3em] mb-4">
-                  <Crosshair className="h-3 w-3" /> Membership
-                </div>
-                <h2 className="text-4xl sm:text-5xl font-bold">
-                  How <span className="text-red-500">Spots</span> Work
-                </h2>
-              </div>
-
-              <div className="grid sm:grid-cols-3 gap-6">
-                {[
-                  {
-                    step: '01',
-                    title: 'Spots Are Capped',
-                    desc: 'We limit active members to 100 to guarantee server quality, speed, and dedicated support for every agent.',
-                    icon: Lock,
-                  },
-                  {
-                    step: '02',
-                    title: 'Early = Locked Price',
-                    desc: 'Members who join early lock in their rate permanently. When we scale pricing, your cost stays the same.',
-                    icon: Award,
-                  },
-                  {
-                    step: '03',
-                    title: 'Waitlist After Full',
-                    desc: 'Once capacity hits, new signups enter a waitlist. Active members churn rarely — grab your spot while it exists.',
-                    icon: Clock,
-                  },
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.step}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15 }}
-                    className="relative rounded-xl border border-red-500/10 bg-white/[0.02] p-6"
-                  >
-                    <div className="text-5xl font-bold text-red-500/10 font-mono absolute top-4 right-4">{item.step}</div>
-                    <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
-                      <item.icon className="h-5 w-5 text-red-500" />
-                    </div>
-                    <h3 className="font-semibold text-white/90 mb-2">{item.title}</h3>
-                    <p className="text-sm text-white/40 font-mono leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Progress bar */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="mt-10 rounded-xl border border-red-500/20 bg-white/[0.02] p-6"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-white/50">Member Capacity</span>
-                  <span className="text-xs font-mono text-red-500">77 / 100 filled</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-red-500/10 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '77%' }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="h-full rounded-full bg-gradient-to-r from-red-700 to-red-500 shadow-[0_0_10px_rgba(220,38,38,0.4)]"
-                  />
-                </div>
-                <div className="mt-3 flex items-center gap-2 text-[10px] font-mono text-white/30">
-                  <Flame className="h-3 w-3 text-red-500/50" />
-                  Filling fast — 12 new members joined this week
-                </div>
-              </motion.div>
-            </div>
-          </Section>
-
-          <div className="red-line" />
 
           {/* ═══════════════════════════════════════
               WALKTHROUGH DEMO
