@@ -15,14 +15,17 @@ const OPENCLAW_IMAGE = process.env.OPENCLAW_IMAGE || 'ghcr.io/placeparks/bot-saa
 // Import pairing server script + start command builders from existing code
 import { PAIRING_SCRIPT_B64, buildStartScript, buildRailwayStartCommand } from '@/lib/railway/deploy'
 
-/** Build a start command that writes SOUL.md then runs the original entrypoint. */
+/** Build a start command that writes SOUL.md + IDENTITY.md then runs the original entrypoint. */
 function buildWrapperStartCommand(): string {
-  // This runs BEFORE the entrypoint; writes SOUL.md from env vars then execs entrypoint
+  // This runs BEFORE the entrypoint; writes workspace files from env vars then execs entrypoint
   return [
     '/bin/bash -c \'',
     'CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}";',
     'WORKSPACE_DIR="$CONFIG_DIR/workspace";',
     'mkdir -p "$WORKSPACE_DIR";',
+    // Write IDENTITY.md with agent name
+    'if [ -n "$_AGENT_NAME" ]; then printf "# Identity\\n\\nname: %s\\n" "$_AGENT_NAME" > "$WORKSPACE_DIR/IDENTITY.md"; echo "[STARTUP] Wrote IDENTITY.md: $_AGENT_NAME"; fi;',
+    // Write SOUL.md with system prompt
     'SOUL="";',
     'if [ -n "$_AGENT_NAME" ]; then SOUL="# $_AGENT_NAME\n\n"; fi;',
     'if [ -n "$_SYSTEM_PROMPT" ]; then SOUL="${SOUL}$_SYSTEM_PROMPT"; fi;',
