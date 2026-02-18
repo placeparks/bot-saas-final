@@ -52,7 +52,7 @@ export function TabsTrigger({ value, children, className = '' }: TabsTriggerProp
     <button
       type="button"
       onClick={() => onValueChange(value)}
-      className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all duration-300 border-b-2 -mb-px ${
+      className={`shrink-0 whitespace-nowrap px-3 py-2.5 text-xs font-mono uppercase tracking-wider transition-all duration-300 border-b-2 -mb-px ${
         isActive
           ? 'border-red-500 text-red-400 bg-red-500/5'
           : 'border-transparent text-white/30 hover:text-white/50 hover:bg-white/[0.02]'
