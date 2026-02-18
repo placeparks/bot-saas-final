@@ -134,17 +134,12 @@ export function AgentSettings({ config, onConfigChange }: AgentSettingsProps) {
                     : 'border-white/10 bg-white/[0.02] hover:border-white/20'
                 }`}
               >
-                <div className="flex items-center gap-1.5">
-                  <p className="text-xs font-medium truncate">{p.name}</p>
-                  {p.badge && (
-                    <span className="px-1 py-0.5 rounded text-[7px] font-mono uppercase tracking-wider bg-red-500/10 text-red-400/60 border border-red-500/15 shrink-0">
-                      {p.badge}
-                    </span>
-                  )}
-                </div>
-                <p className="text-[9px] text-white/25 font-mono mt-0.5 truncate">
-                  {p.description}
-                </p>
+                <p className="text-xs font-medium truncate leading-tight">{p.name}</p>
+                {p.badge && (
+                  <span className="mt-0.5 inline-block px-1 py-0.5 rounded text-[7px] font-mono uppercase tracking-wide bg-red-500/10 text-red-400/60 border border-red-500/15">
+                    {p.badge}
+                  </span>
+                )}
               </button>
             ))}
           </div>
