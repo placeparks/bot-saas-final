@@ -342,8 +342,6 @@ const walkthroughSteps: WalkthroughStep[] = [
       { text: '  Available channels:', delay: 500 },
       { text: '    [✓] Discord — Bot token ready', delay: 800, color: 'text-red-400' },
       { text: '    [✓] Telegram — Bot API connected', delay: 1100, color: 'text-red-400' },
-      { text: '    [ ] WhatsApp — QR pairing', delay: 1400, color: 'text-white/40' },
-      { text: '    [ ] Slack / Signal / Matrix', delay: 1600, color: 'text-white/40' },
       { text: '', delay: 1900 },
       { text: '  ✓ 2 channels configured.', delay: 2300, color: 'text-red-500' },
     ],
@@ -499,8 +497,8 @@ function WalkthroughDemo() {
                 <Play className="h-8 w-8 text-white ml-1" />
               </div>
             </motion.button>
-            <p className="mt-4 text-xs font-mono text-white/25">Click to start the walkthrough</p>
-            <p className="mt-1 text-[10px] font-mono text-white/15">4 steps — Full deploy demo</p>
+            <p className="mt-4 text-xs font-mono text-white/50">Click to start the walkthrough</p>
+            <p className="mt-1 text-[10px] font-mono text-white/35">4 steps — Full deploy demo</p>
           </div>
         )}
 
@@ -672,10 +670,9 @@ export default function Home() {
   const features = [
     { icon: Zap, title: 'One-Click Deploy', desc: 'Your private AI agent spins up in under 5 minutes. No terminals. No DevOps. Just click.' },
     { icon: Shield, title: 'Vault-Grade Security', desc: 'Every agent runs in an isolated container. Keys are encrypted. Nothing leaks.' },
-    { icon: MessageSquare, title: 'Multi-Channel', desc: 'Connect Discord, Telegram, WhatsApp, Slack, Signal, and Matrix. One agent, all your channels.' },
+    { icon: MessageSquare, title: 'Multi-Channel', desc: 'Connect Discord and Telegram. One agent, all your channels.' },
     { icon: Cpu, title: 'Multi-Model AI', desc: 'Bring your own API key — 10+ providers including Claude, GPT, Gemini, Grok, DeepSeek, Mistral, and OpenRouter.' },
     { icon: Globe, title: 'Web Search & Browser', desc: 'Your agent can search the web, browse pages, and pull live data autonomously.' },
-    { icon: Lock, title: 'Private Gateway', desc: 'Each member gets a dedicated gateway with auth tokens. Your scope, your rules.' },
   ]
 
   const [activeAgents, setActiveAgents] = useState<{ name: string; status: string; uptime: string; channel: string }[]>([])
@@ -694,20 +691,31 @@ export default function Home() {
   }, [])
 
   const teamMembers = [
-    { name: 'RedClaw', role: 'Founder & Lead', desc: 'Built the infrastructure from scratch. Former security engineer.' },
-    { name: 'NightShell', role: 'Core Dev', desc: 'Handles deployment pipelines and container orchestration.' },
-    { name: 'ShadowPinch', role: 'Community Lead', desc: 'Runs the Discord, onboards new members, curates agent templates.' },
-    { name: 'IronGrip', role: 'Support', desc: 'First responder. If your agent is down, he fixes it.' },
+    { 
+      name: 'NickPlaysCrypto', 
+      role: 'Founder & Visionary', 
+      desc: 'Founder shaping the vision and growth of the autonomous agent deployment ecosystem.' 
+    },
+    { 
+      name: 'Mirac', 
+      role: 'Core Dev', 
+      desc: 'Built the infrastructure from scratch. Engineer focused on architecture, deployment automation, and reliability.' 
+    }, 
+    { 
+      name: 'Crabby', 
+      role: 'Autonomous Community Agent', 
+      desc: 'AI-powered onboarding and support agent managing Discord operations and developer assistance 24/7.' 
+    },
   ]
+  
 
   const faqs = [
-    { q: '> What exactly is Claw Club?', a: 'Claw Club is a premium, members-only service that deploys private AI agents for you. You get a fully managed OpenClaw instance connected to your channels — Discord, Telegram, WhatsApp, Slack, and more.' },
+    { q: '> What exactly is Claw Club?', a: 'Claw Club is a premium, members-only service that deploys private AI agents for you. You get a fully managed OpenClaw instance connected to your channels — Discord and Telegram.' },
     { q: '> Do I need any technical knowledge?', a: 'Zero. We handle all the infrastructure. Choose your plan, pick an AI provider, configure your channels, and we deploy everything. Four steps, under 5 minutes.' },
     { q: '> What AI models can I use?', a: 'We support 10+ providers: Anthropic Claude, OpenAI GPT & o-series, Google Gemini, xAI Grok, Groq, Mistral, DeepSeek, Cerebras, Venice, and OpenRouter (200+ models). Bring your own API key and swap models anytime.' },
     { q: '> Is my data private?', a: 'Absolutely. Each member runs in a fully isolated container with encrypted keys. We never see or store your API keys or conversations.' },
     { q: '> Can I cancel anytime?', a: 'Yes. Cancel from your dashboard — no questions, no lock-in. We also offer a 7-day money-back guarantee.' },
-    { q: '> How do member spots work?', a: 'We cap the total number of active members to keep infrastructure quality high. Once spots fill up, new signups go on a waitlist. Early members lock in their pricing permanently.' },
-    { q: '> What channels are supported?', a: 'Discord, Telegram, WhatsApp (QR pairing), Slack, Signal, Google Chat, and Matrix. Connect multiple channels to the same agent simultaneously.' },
+    { q: '> What channels are supported?', a: 'Discord and Telegram. Connect multiple channels to the same agent simultaneously.' },
     { q: '> Any hidden fees?', a: 'None from us. Your only other cost is your AI provider API key (billed directly by them). Our pricing is flat and transparent.' },
   ]
 
@@ -779,10 +787,10 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.6 }}
-                className="mt-6 text-lg sm:text-xl text-white/50 font-mono max-w-xl mx-auto"
+                className="mt-6 text-lg sm:text-xl text-white/70 font-mono max-w-xl mx-auto"
               >
                 Deploy your own private AI agent in minutes.
-                Powered by OpenClaw. Running 24/7. Your keys, your rules.
+                Powered by Claw Club. Running 24/7. Bring your keys, your rules.
               </motion.p>
 
               <motion.div
@@ -814,7 +822,7 @@ export default function Home() {
               >
                 <div className="text-center">
                   <div className="text-2xl sm:text-3xl font-bold text-red-500 font-mono">{"<"}5 min</div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-white/30 mt-1 font-mono">Deploy Time</div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-white/50 mt-1 font-mono">Deploy Time</div>
                 </div>
               </motion.div>
             </div>
@@ -844,7 +852,7 @@ export default function Home() {
                 <h2 className="text-4xl sm:text-5xl font-bold">
                   Lock In Your <span className="text-red-500">Price</span>
                 </h2>
-                <p className="mt-4 text-white/40 font-mono text-sm max-w-lg mx-auto">
+                <p className="mt-4 text-white/60 font-mono text-sm max-w-lg mx-auto">
                   Once we hit capacity, new members go on the waitlist.
                   Early birds keep their rate — forever.
                 </p>
@@ -853,7 +861,7 @@ export default function Home() {
               <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
                 {[
                   { name: 'Monthly', price: '$35', period: '/mo', desc: 'Try it out. Cancel anytime.', features: ['All features', 'Telegram + Discord', 'Unlimited messages', 'Web search & browser', 'Community access'] },
-                  { name: 'Yearly', price: '$320', period: '/yr', desc: 'Best value. Save $49.', badge: 'BEST VALUE', popular: true, features: ['Everything in Monthly', 'Priority support', 'Dedicated support channel', 'Save $49 annually', 'Founding member perks'] },
+                  { name: 'Yearly', price: '$320', period: '/yr', desc: 'Best value. Save $100.', badge: 'BEST VALUE', popular: true, features: ['Everything in Monthly', 'Priority support', 'Dedicated support channel', 'Save $100 annually', 'Founding member perks'] },
                 ].map((plan, i) => (
                   <motion.div
                     key={plan.name}
@@ -872,13 +880,13 @@ export default function Home() {
                     <div className="text-xs font-mono text-red-500/60 uppercase tracking-wider">{plan.name}</div>
                     <div className="mt-3 flex items-end gap-1">
                       <span className="text-4xl font-bold text-white">{plan.price}</span>
-                      <span className="text-sm text-white/30 font-mono mb-1">{plan.period}</span>
+                      <span className="text-sm text-white/50 font-mono mb-1">{plan.period}</span>
                     </div>
-                    <p className="mt-2 text-xs text-white/40 font-mono">{plan.desc}</p>
+                    <p className="mt-2 text-xs text-white/55 font-mono">{plan.desc}</p>
                     <div className="mt-6 space-y-2.5">
                       {plan.features.map((f) => (
-                        <div key={f} className="flex items-center gap-2 text-sm text-white/60">
-                          <div className="w-1 h-1 rounded-full bg-red-500" />
+                        <div key={f} className="flex items-center gap-2 text-sm text-white/70">
+                          <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
                           <span className="font-mono text-xs">{f}</span>
                         </div>
                       ))}
@@ -932,7 +940,7 @@ export default function Home() {
                       <f.icon className="h-5 w-5 text-red-500" />
                     </div>
                     <h3 className="font-semibold text-white/90 mb-2">{f.title}</h3>
-                    <p className="text-sm text-white/40 font-mono leading-relaxed">{f.desc}</p>
+                    <p className="text-sm text-white/60 font-mono leading-relaxed">{f.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -955,7 +963,7 @@ export default function Home() {
                   <h2 className="text-4xl sm:text-5xl font-bold">
                     {agentCount} Active <span className="text-red-500">{agentCount === 1 ? 'Agent' : 'Agents'}</span>
                   </h2>
-                  <p className="mt-4 text-white/40 font-mono text-sm">Real agents. Real uptime. Running right now.</p>
+                  <p className="mt-4 text-white/60 font-mono text-sm">Real agents. Real uptime. Running right now.</p>
                 </div>
 
                 <div className="terminal-window p-0 overflow-hidden">
@@ -992,8 +1000,8 @@ export default function Home() {
                                 <span className={agent.status === 'online' ? 'text-red-400' : 'text-yellow-400/60'}>{agent.status}</span>
                               </span>
                             </td>
-                            <td className="p-3 text-white/40 hidden md:table-cell">{agent.uptime}</td>
-                            <td className="p-3 text-white/40 hidden sm:table-cell">{agent.channel}</td>
+                            <td className="p-3 text-white/60 hidden md:table-cell">{agent.uptime}</td>
+                            <td className="p-3 text-white/60 hidden sm:table-cell">{agent.channel}</td>
                           </motion.tr>
                         ))}
                       </tbody>
@@ -1026,7 +1034,7 @@ export default function Home() {
                 <h2 className="text-4xl sm:text-5xl font-bold">
                   Key <span className="text-red-500">Members</span>
                 </h2>
-                <p className="mt-4 text-white/40 font-mono text-sm">The humans behind the claws.</p>
+                <p className="mt-4 text-white/60 font-mono text-sm">The humans behind the claws.</p>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -1045,7 +1053,7 @@ export default function Home() {
                     </div>
                     <div className="font-semibold text-white/90 mb-1">{m.name}</div>
                     <div className="text-[10px] font-mono text-red-500/60 uppercase tracking-wider mb-3">{m.role}</div>
-                    <p className="text-xs text-white/35 font-mono leading-relaxed">{m.desc}</p>
+                    <p className="text-xs text-white/55 font-mono leading-relaxed">{m.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -1067,7 +1075,7 @@ export default function Home() {
                 <h2 className="text-4xl sm:text-5xl font-bold">
                   What{"'"}s <span className="text-red-500">On Offer</span>
                 </h2>
-                <p className="mt-4 text-white/40 font-mono text-sm">Watch a full deploy walkthrough — from plan selection to live agent.</p>
+                <p className="mt-4 text-white/60 font-mono text-sm">Watch a full deploy walkthrough — from plan selection to live agent.</p>
               </div>
 
               <WalkthroughDemo />
@@ -1141,7 +1149,7 @@ export default function Home() {
                       Claim Your Spot Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                     <a
-                      href="https://discord.gg/clawclub"
+                      href="https://clawclub.cc" 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 border border-red-500/30 text-red-400 hover:text-white hover:border-red-500/60 px-8 py-3.5 rounded-lg font-semibold transition-all duration-300"
@@ -1152,7 +1160,7 @@ export default function Home() {
 
                   <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-mono text-white/25">
                     <Lock className="h-3 w-3" />
-                    Secure checkout • Cancel anytime • 7-day money-back guarantee
+                    Secure checkout • Cancel anytime
                   </div>
                 </div>
               </div>
