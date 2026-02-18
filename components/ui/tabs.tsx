@@ -30,9 +30,9 @@ export function Tabs({ value, onValueChange, children, className = '' }: TabsPro
   )
 }
 
-export function TabsList({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+export function TabsList({ children, className = '', style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <div className={`flex gap-1 border-b border-red-500/10 pb-px ${className}`}>
+    <div className={`flex gap-1 border-b border-red-500/10 pb-px ${className}`} style={style}>
       {children}
     </div>
   )
