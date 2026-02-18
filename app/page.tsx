@@ -276,7 +276,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-5 pb-5 text-sm text-white/50 font-mono leading-relaxed">{a}</div>
+            <div className="px-5 pb-5 text-sm text-white/65 font-mono leading-relaxed">{a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -319,12 +319,12 @@ const walkthroughSteps: WalkthroughStep[] = [
     lines: [
       { text: '$ claw config --provider', delay: 0 },
       { text: '', delay: 300 },
-      { text: '  10 providers available:', delay: 500 },
+      { text: '  25+ providers available:', delay: 500 },
       { text: '    [1] Anthropic Claude (Recommended)', delay: 700 },
-      { text: '    [2] OpenAI GPT / o-series', delay: 900 },
-      { text: '    [3] Google Gemini', delay: 1050 },
+      { text: '    [2] OpenAI GPT / Codex', delay: 900 },
+      { text: '    [3] Google Gemini / Vertex AI', delay: 1050 },
       { text: '    [4] xAI Grok / Groq / Mistral / DeepSeek', delay: 1200 },
-      { text: '    [5] OpenRouter — 200+ models', delay: 1350 },
+      { text: '    [5] OpenRouter — 300+ models', delay: 1350 },
       { text: '', delay: 1500 },
       { text: '  > Provider: Anthropic Claude', delay: 1800, color: 'text-red-400' },
       { text: '  > Model: claude-sonnet-4-5-20250929', delay: 2200, color: 'text-red-400' },
@@ -462,7 +462,7 @@ function WalkthroughDemo() {
               />
             ))}
           </div>
-          <span className="text-[9px] font-mono text-white/20 ml-2 hidden sm:inline">
+          <span className="text-[9px] font-mono text-white/40 ml-2 hidden sm:inline">
             {isPlaying ? `Step ${currentStep + 1} of ${walkthroughSteps.length}` : isComplete ? 'Complete' : 'Ready'}
           </span>
         </div>
@@ -477,7 +477,7 @@ function WalkthroughDemo() {
               <span className="text-[9px] font-mono text-red-500/60">RECORDING</span>
             </motion.div>
           )}
-          <span className="text-[9px] font-mono text-white/15">claw-walkthrough</span>
+          <span className="text-[9px] font-mono text-white/35">claw-walkthrough</span>
         </div>
       </div>
 
@@ -536,12 +536,12 @@ function WalkthroughDemo() {
                       transition={{ duration: 0.12 }}
                       className={`leading-relaxed ${
                         line.color || (
-                          line.text.startsWith('$') ? 'text-white/70' :
-                          line.text.includes('[████') ? 'text-red-500/60' :
+                          line.text.startsWith('$') ? 'text-white/80' :
+                          line.text.includes('[████') ? 'text-red-500/70' :
                           line.text.includes('✓') ? 'text-red-500' :
-                          line.text.includes('>') && !line.text.startsWith('  >') ? 'text-white/60' :
+                          line.text.includes('>') && !line.text.startsWith('  >') ? 'text-white/70' :
                           line.text.startsWith('  >') ? 'text-red-400' :
-                          'text-white/35'
+                          'text-white/55'
                         )
                       }`}
                     >
@@ -574,7 +574,7 @@ function WalkthroughDemo() {
                       transition={{ delay: i * 0.1, duration: 0.3 }}
                       className="rounded-lg border border-red-500/15 bg-red-500/[0.03] p-3"
                     >
-                      <div className="text-[9px] text-white/25 uppercase tracking-wider">{r.label}</div>
+                      <div className="text-[9px] text-white/45 uppercase tracking-wider">{r.label}</div>
                       <div className={`text-sm font-bold mt-1 ${r.color || 'text-white/70'}`}>{r.value}</div>
                     </motion.div>
                   ))}
@@ -603,7 +603,7 @@ function WalkthroughDemo() {
                   <Check className="h-8 w-8 text-red-500" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Walkthrough Complete</h3>
-                <p className="text-xs font-mono text-white/35 mb-6 max-w-xs">
+                <p className="text-xs font-mono text-white/55 mb-6 max-w-xs">
                   That{"'"}s it. 4 steps, under 5 minutes. Your AI agent is live and listening.
                 </p>
                 <div className="flex items-center gap-3 justify-center">
@@ -651,7 +651,7 @@ function WalkthroughDemo() {
           />
         </div>
 
-        <span className="text-[9px] font-mono text-white/20">
+        <span className="text-[9px] font-mono text-white/40">
           {isComplete ? 'done' : isPlaying ? `${currentStep + 1}/${walkthroughSteps.length}` : '0:00'}
         </span>
       </div>
@@ -671,7 +671,7 @@ export default function Home() {
     { icon: Zap, title: 'One-Click Deploy', desc: 'Your private AI agent spins up in under 5 minutes. No terminals. No DevOps. Just click.' },
     { icon: Shield, title: 'Vault-Grade Security', desc: 'Every agent runs in an isolated container. Keys are encrypted. Nothing leaks.' },
     { icon: MessageSquare, title: 'Multi-Channel', desc: 'Connect Discord and Telegram. One agent, all your channels.' },
-    { icon: Cpu, title: 'Multi-Model AI', desc: 'Bring your own API key — 10+ providers including Claude, GPT, Gemini, Grok, DeepSeek, Mistral, and OpenRouter.' },
+    { icon: Cpu, title: 'Multi-Model AI', desc: 'Bring your own API key — 25+ providers including Claude, GPT, Gemini, Grok, DeepSeek, Mistral, Ollama, and OpenRouter.' },
     { icon: Globe, title: 'Web Search & Browser', desc: 'Your agent can search the web, browse pages, and pull live data autonomously.' },
   ]
 
@@ -712,7 +712,7 @@ export default function Home() {
   const faqs = [
     { q: '> What exactly is Claw Club?', a: 'Claw Club is a premium, members-only service that deploys private AI agents for you. You get a fully managed OpenClaw instance connected to your channels — Discord and Telegram.' },
     { q: '> Do I need any technical knowledge?', a: 'Zero. We handle all the infrastructure. Choose your plan, pick an AI provider, configure your channels, and we deploy everything. Four steps, under 5 minutes.' },
-    { q: '> What AI models can I use?', a: 'We support 10+ providers: Anthropic Claude, OpenAI GPT & o-series, Google Gemini, xAI Grok, Groq, Mistral, DeepSeek, Cerebras, Venice, and OpenRouter (200+ models). Bring your own API key and swap models anytime.' },
+    { q: '> What AI models can I use?', a: 'We support 25+ providers and 150+ models: Anthropic Claude, OpenAI GPT, Google Gemini, xAI Grok, Groq, Mistral, DeepSeek, Cerebras, Venice, Ollama (local), Amazon Bedrock, and OpenRouter (300+ models). Bring your own API key and swap models anytime.' },
     { q: '> Is my data private?', a: 'Absolutely. Each member runs in a fully isolated container with encrypted keys. We never see or store your API keys or conversations.' },
     { q: '> Can I cancel anytime?', a: 'Yes. Cancel from your dashboard — no questions, no lock-in. We also offer a 7-day money-back guarantee.' },
     { q: '> What channels are supported?', a: 'Discord and Telegram. Connect multiple channels to the same agent simultaneously.' },
@@ -1037,7 +1037,7 @@ export default function Home() {
                 <p className="mt-4 text-white/60 font-mono text-sm">The humans behind the claws.</p>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
                 {teamMembers.map((m, i) => (
                   <motion.div
                     key={m.name}
@@ -1136,7 +1136,7 @@ export default function Home() {
                     Stop Watching.<br />
                     <span className="text-red-500">Start Deploying.</span>
                   </h2>
-                  <p className="text-white/40 font-mono text-sm max-w-md mx-auto mb-8">
+                  <p className="text-white/60 font-mono text-sm max-w-md mx-auto mb-8">
                     Your private AI agent is one click away. Join Claw Club,
                     deploy your agent, and never look back.
                   </p>
@@ -1158,7 +1158,7 @@ export default function Home() {
                     </a>
                   </div>
 
-                  <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-mono text-white/25">
+                  <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-mono text-white/45">
                     <Lock className="h-3 w-3" />
                     Secure checkout • Cancel anytime
                   </div>
@@ -1170,16 +1170,16 @@ export default function Home() {
           {/* ═══════════════════════════════════════
               FOOTER
               ═══════════════════════════════════════ */}
-          <footer className="border-t border-red-500/10 py-10">
-            <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <footer className="border-t border-red-500/20 py-12 bg-[#080808]/50">
+            <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-3">
-                <Image src="/openclaw_icon.png" alt="Claw Club" width={28} height={28} className="opacity-50" />
-                <span className="text-xs font-mono text-white/25">&copy; 2026 Claw Club. All rights reserved.</span>
+                <Image src="/openclaw_icon.png" alt="Claw Club" width={28} height={28} className="opacity-70" />
+                <span className="text-sm font-mono text-white/70">&copy; 2026 Claw Club. All rights reserved.</span>
               </div>
-              <div className="flex items-center gap-6 text-xs font-mono text-white/20">
-                <Link href="/login" className="hover:text-red-500 transition-colors">Login</Link>
-                <Link href="/register" className="hover:text-red-500 transition-colors">Register</Link>
-                <Link href="/pricing" className="hover:text-red-500 transition-colors">Pricing</Link>
+              <div className="flex items-center gap-6 text-sm font-mono text-white/70">
+                <Link href="/login" className="hover:text-red-400 transition-colors">Login</Link>
+                <Link href="/register" className="hover:text-red-400 transition-colors">Register</Link>
+                <Link href="/pricing" className="hover:text-red-400 transition-colors">Pricing</Link>
               </div>
             </div>
           </footer>
