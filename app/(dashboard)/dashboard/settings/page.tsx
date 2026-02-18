@@ -92,25 +92,25 @@ export default function SettingsPage() {
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-4 py-4 sm:px-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => router.push('/dashboard')}
-                className="h-8 px-3 border-red-500/20 text-white/40 hover:text-white/60 hover:border-red-500/30"
+                className="h-8 px-2 sm:px-3 border-red-500/20 text-white/40 hover:text-white/60 hover:border-red-500/30 shrink-0"
               >
-                <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
-                Back
+                <ArrowLeft className="h-3.5 w-3.5 sm:mr-1.5" />
+                <span className="hidden sm:inline">Back</span>
               </Button>
 
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl border border-red-500/30 bg-red-500/10 flex items-center justify-center">
-                  <Settings className="h-5 w-5 text-red-500" />
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl border border-red-500/30 bg-red-500/10 flex items-center justify-center shrink-0">
+                  <Settings className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
                 </div>
-                <div>
-                  <h1 className="text-lg font-bold tracking-tight">Bot Settings</h1>
-                  <p className="text-[10px] font-mono text-white/25">
+                <div className="min-w-0">
+                  <h1 className="text-base sm:text-lg font-bold tracking-tight truncate">Bot Settings</h1>
+                  <p className="hidden sm:block text-[10px] font-mono text-white/25">
                     Configure your agent, channels, and security
                   </p>
                 </div>
@@ -118,7 +118,7 @@ export default function SettingsPage() {
             </div>
 
             {instance && (
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
+              <span className={`shrink-0 inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
                 instance.status === 'RUNNING'
                   ? 'bg-red-500/10 border border-red-500/30 text-red-400'
                   : 'bg-white/5 border border-white/10 text-white/30'
@@ -134,14 +134,14 @@ export default function SettingsPage() {
       </motion.header>
 
       {/* Content */}
-      <main className="container mx-auto px-4 py-8 sm:px-6 max-w-3xl">
+      <main className="container mx-auto px-4 pt-8 pb-28 sm:px-6 sm:pb-8 max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mb-2 overflow-x-auto flex-nowrap">
+            <TabsList className="mb-2 overflow-x-auto flex-nowrap scrollbar-none" style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
               <TabsTrigger value="agent">
                 <span className="flex items-center gap-1.5">
                   <Bot className="h-3 w-3" /> Agent
