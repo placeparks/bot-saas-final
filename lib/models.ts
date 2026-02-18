@@ -21,6 +21,7 @@ export interface ProviderDefinition {
   defaultModel: string
   getKeyUrl: string
   envVar: string // environment variable name for the API key
+  noKeyRequired?: boolean // true for local providers like Ollama
 }
 
 export const PROVIDERS: ProviderDefinition[] = [
@@ -65,6 +66,29 @@ export const PROVIDERS: ProviderDefinition[] = [
     ],
   },
   {
+    id: 'OPENAI_CODEX',
+    name: 'OpenAI Codex',
+    description: 'Dedicated code generation endpoint',
+    defaultModel: 'openai-codex/gpt-5.2',
+    getKeyUrl: 'https://platform.openai.com/api-keys',
+    envVar: 'OPENAI_API_KEY',
+    models: [
+      { id: 'openai-codex/gpt-5.2', name: 'GPT-5.2 Codex', description: 'Latest codex' },
+      { id: 'openai-codex/gpt-5.1', name: 'GPT-5.1 Codex', description: 'Previous codex' },
+    ],
+  },
+  {
+    id: 'OPENCODE',
+    name: 'OpenCode Zen',
+    description: 'Zen coding assistant — focused code generation',
+    defaultModel: 'opencode/claude-opus-4-5',
+    getKeyUrl: 'https://opencode.ai',
+    envVar: 'OPENCODE_API_KEY',
+    models: [
+      { id: 'opencode/claude-opus-4-5', name: 'Claude Opus 4.5', description: 'Via OpenCode' },
+    ],
+  },
+  {
     id: 'GOOGLE',
     name: 'Google Gemini',
     description: 'Gemini models — multimodal and fast',
@@ -79,6 +103,46 @@ export const PROVIDERS: ProviderDefinition[] = [
       { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash', description: 'Fast & efficient' },
       { id: 'google/gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash Lite', description: 'Budget option' },
       { id: 'google/gemini-2.0-flash', name: 'Gemini 2.0 Flash', description: 'Legacy' },
+    ],
+  },
+  {
+    id: 'GOOGLE_VERTEX',
+    name: 'Google Vertex AI',
+    description: 'Enterprise Gemini via Google Cloud — service account auth',
+    defaultModel: 'google-vertex/gemini-3-pro-preview',
+    getKeyUrl: 'https://console.cloud.google.com/apis/credentials',
+    envVar: 'GOOGLE_APPLICATION_CREDENTIALS',
+    models: [
+      { id: 'google-vertex/gemini-3-pro-preview', name: 'Gemini 3 Pro', description: 'Latest via Vertex' },
+      { id: 'google-vertex/gemini-3-flash-preview', name: 'Gemini 3 Flash', description: 'Fast via Vertex' },
+      { id: 'google-vertex/gemini-2.5-pro', name: 'Gemini 2.5 Pro', description: 'Stable via Vertex' },
+      { id: 'google-vertex/gemini-2.5-flash', name: 'Gemini 2.5 Flash', description: 'Efficient via Vertex' },
+    ],
+  },
+  {
+    id: 'ZAI',
+    name: 'Z.AI (GLM)',
+    description: 'GLM models from Zhipu AI',
+    defaultModel: 'zai/glm-4.7',
+    getKeyUrl: 'https://open.bigmodel.cn/usercenter/apikeys',
+    envVar: 'ZAI_API_KEY',
+    models: [
+      { id: 'zai/glm-4.7', name: 'GLM 4.7', description: 'Latest flagship' },
+      { id: 'zai/glm-4.6', name: 'GLM 4.6', description: 'Previous generation' },
+    ],
+  },
+  {
+    id: 'VERCEL_AI_GATEWAY',
+    name: 'Vercel AI Gateway',
+    description: 'Route to any provider via Vercel — unified billing',
+    defaultModel: 'vercel-ai-gateway/anthropic/claude-opus-4.5',
+    getKeyUrl: 'https://vercel.com/dashboard/settings/ai-gateway',
+    envVar: 'VERCEL_AI_GATEWAY_API_KEY',
+    models: [
+      { id: 'vercel-ai-gateway/anthropic/claude-opus-4.5', name: 'Claude Opus 4.5', description: 'Via Vercel' },
+      { id: 'vercel-ai-gateway/anthropic/claude-sonnet-4.5', name: 'Claude Sonnet 4.5', description: 'Via Vercel' },
+      { id: 'vercel-ai-gateway/openai/gpt-5.2', name: 'GPT-5.2', description: 'Via Vercel' },
+      { id: 'vercel-ai-gateway/google/gemini-3-pro-preview', name: 'Gemini 3 Pro', description: 'Via Vercel' },
     ],
   },
   {
@@ -159,6 +223,8 @@ export const PROVIDERS: ProviderDefinition[] = [
       { id: 'cerebras/gpt-oss-120b', name: 'GPT-OSS 120B', description: 'OpenAI open-weight' },
       { id: 'cerebras/llama-3.3-70b', name: 'Llama 3.3 70B', description: 'Good quality' },
       { id: 'cerebras/llama-3.1-8b', name: 'Llama 3.1 8B', description: 'Ultra-fast' },
+      { id: 'cerebras/zai-glm-4.7', name: 'GLM 4.7', description: 'Z.AI model' },
+      { id: 'cerebras/zai-glm-4.6', name: 'GLM 4.6', description: 'Z.AI previous gen' },
     ],
   },
   {
@@ -212,6 +278,17 @@ export const PROVIDERS: ProviderDefinition[] = [
     ],
   },
   {
+    id: 'KIMI_CODE',
+    name: 'Kimi Code',
+    description: 'Dedicated coding model from Moonshot',
+    defaultModel: 'kimi-code/kimi-for-coding',
+    getKeyUrl: 'https://platform.moonshot.cn/console/api-keys',
+    envVar: 'MOONSHOT_API_KEY',
+    models: [
+      { id: 'kimi-code/kimi-for-coding', name: 'Kimi for Coding', description: 'Code specialist' },
+    ],
+  },
+  {
     id: 'MINIMAX',
     name: 'MiniMax',
     description: 'MiniMax models — coding and reasoning',
@@ -221,6 +298,29 @@ export const PROVIDERS: ProviderDefinition[] = [
     models: [
       { id: 'minimax/MiniMax-M2.1', name: 'MiniMax M2.1', description: 'Code-focused' },
       { id: 'minimax/MiniMax-M2.1-lightning', name: 'MiniMax M2.1 Lightning', description: 'Fast variant' },
+    ],
+  },
+  {
+    id: 'QWEN',
+    name: 'Qwen (Alibaba)',
+    description: 'Qwen models — strong reasoning and code',
+    defaultModel: 'qwen-portal/coder-model',
+    getKeyUrl: 'https://dashscope.console.aliyun.com/apiKey',
+    envVar: 'QWEN_API_KEY',
+    models: [
+      { id: 'qwen-portal/coder-model', name: 'Qwen Coder', description: 'Code specialist' },
+      { id: 'qwen-portal/vision-model', name: 'Qwen Vision', description: 'Multimodal' },
+    ],
+  },
+  {
+    id: 'SYNTHETIC',
+    name: 'Synthetic',
+    description: 'HuggingFace model wrapper — run any HF model',
+    defaultModel: 'synthetic/hf:MiniMaxAI/MiniMax-M2.1',
+    getKeyUrl: 'https://huggingface.co/settings/tokens',
+    envVar: 'HUGGINGFACE_API_KEY',
+    models: [
+      { id: 'synthetic/hf:MiniMaxAI/MiniMax-M2.1', name: 'MiniMax M2.1', description: 'Via Synthetic' },
     ],
   },
   {
@@ -294,6 +394,53 @@ export const PROVIDERS: ProviderDefinition[] = [
       { id: 'openrouter/moonshotai/kimi-k2.5', name: 'Kimi K2.5', description: 'Via OpenRouter' },
       { id: 'openrouter/qwen/qwen-2.5-72b', name: 'Qwen 2.5 72B', description: 'Via OpenRouter' },
       { id: 'openrouter/openrouter/auto', name: 'Auto (best match)', description: 'Auto-routing' },
+    ],
+  },
+  {
+    id: 'GITHUB_COPILOT',
+    name: 'GitHub Copilot',
+    description: 'Use your Copilot subscription — requires GitHub auth',
+    defaultModel: 'github-copilot/gpt-4o',
+    getKeyUrl: 'https://github.com/settings/copilot',
+    envVar: 'GITHUB_TOKEN',
+    models: [
+      { id: 'github-copilot/gpt-4o', name: 'GPT-4o', description: 'Via Copilot' },
+      { id: 'github-copilot/gpt-4o-mini', name: 'GPT-4o Mini', description: 'Via Copilot' },
+      { id: 'github-copilot/claude-sonnet-4.5', name: 'Claude Sonnet 4.5', description: 'Via Copilot' },
+    ],
+  },
+  {
+    id: 'OLLAMA',
+    name: 'Ollama (Local)',
+    description: 'Run models locally — no API key needed',
+    badge: 'Local',
+    defaultModel: 'ollama/llama3.3',
+    getKeyUrl: 'https://ollama.com/download',
+    envVar: 'OLLAMA_HOST',
+    noKeyRequired: true,
+    models: [
+      { id: 'ollama/llama3.3', name: 'Llama 3.3', description: 'Best local quality' },
+      { id: 'ollama/llama3.1', name: 'Llama 3.1', description: 'Stable' },
+      { id: 'ollama/qwen3', name: 'Qwen 3', description: 'Alibaba model' },
+      { id: 'ollama/deepseek-r1', name: 'DeepSeek R1', description: 'Reasoning' },
+      { id: 'ollama/mistral', name: 'Mistral', description: 'Lightweight' },
+      { id: 'ollama/gemma2', name: 'Gemma 2', description: 'Google open model' },
+      { id: 'ollama/phi3', name: 'Phi 3', description: 'Microsoft model' },
+    ],
+  },
+  {
+    id: 'BEDROCK',
+    name: 'Amazon Bedrock',
+    description: 'AWS-managed models — Claude, Llama, and more',
+    defaultModel: 'bedrock/anthropic.claude-sonnet-4-5-v1',
+    getKeyUrl: 'https://console.aws.amazon.com/bedrock',
+    envVar: 'AWS_ACCESS_KEY_ID',
+    models: [
+      { id: 'bedrock/anthropic.claude-opus-4-5-v1', name: 'Claude Opus 4.5', description: 'Via Bedrock' },
+      { id: 'bedrock/anthropic.claude-sonnet-4-5-v1', name: 'Claude Sonnet 4.5', description: 'Via Bedrock' },
+      { id: 'bedrock/anthropic.claude-haiku-4-5-v1', name: 'Claude Haiku 4.5', description: 'Via Bedrock' },
+      { id: 'bedrock/meta.llama3-3-70b-instruct-v1', name: 'Llama 3.3 70B', description: 'Via Bedrock' },
+      { id: 'bedrock/mistral.mistral-large-v1', name: 'Mistral Large', description: 'Via Bedrock' },
     ],
   },
 ]
