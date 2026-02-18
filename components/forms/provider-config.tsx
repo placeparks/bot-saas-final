@@ -75,22 +75,22 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
             return (
               <Card
                 key={p.id}
-                className={`p-4 cursor-pointer border transition-all duration-300 ${
+                className={`p-3 sm:p-4 cursor-pointer border transition-all duration-300 ${
                   isSelected
                     ? 'border-red-500/50 bg-red-500/[0.04] ring-2 ring-red-500/40 shadow-[0_0_25px_rgba(220,38,38,0.12)]'
                     : 'border-white/10 bg-white/[0.02] hover:border-red-500/30'
                 }`}
                 onClick={() => onChange({ provider: p.id, model: p.defaultModel })}
               >
-                <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-semibold text-white/90">{p.name}</h4>
+                <div className="mb-1.5">
+                  <h4 className="font-semibold text-white/90 text-sm leading-tight">{p.name}</h4>
                   {p.badge && (
-                    <span className="bg-red-600 text-white text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="mt-1 inline-block bg-red-600 text-white text-[8px] sm:text-[10px] font-mono font-bold px-1.5 sm:px-2.5 py-0.5 rounded-full uppercase tracking-wide">
                       {p.badge}
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-white/60">{p.description}</p>
+                <p className="text-xs text-white/60 line-clamp-2">{p.description}</p>
               </Card>
             )
           })}
@@ -214,7 +214,7 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
                       }`}
                       onClick={() => { onChange({ model: m.id }); setModelOpen(false) }}
                     >
-                      <span>{m.name} <span className="text-white/30">— {m.description}</span></span>
+                      <span className="truncate min-w-0">{m.name}<span className="text-white/30 hidden sm:inline"> — {m.description}</span></span>
                       {isActive && <Check className="h-3.5 w-3.5 text-red-400 flex-shrink-0" />}
                     </div>
                   )
