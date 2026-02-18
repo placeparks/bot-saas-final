@@ -150,10 +150,10 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
               onClick={() => {
                 if (selectedProvider) window.open(selectedProvider.getKeyUrl, '_blank')
               }}
-              className="border-red-500/30 text-red-400 hover:border-red-500/50 hover:text-red-300 hover:bg-red-500/5"
+              className="shrink-0 border-red-500/30 text-red-400 hover:border-red-500/50 hover:text-red-300 hover:bg-red-500/5 px-3"
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Get Key
+              <ExternalLink className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Get Key</span>
             </Button>
           </div>
         </div>
