@@ -79,7 +79,7 @@
    CLAW CLUB — Terminal / Retro Effects
    ═══════════════════════════════════════════════ */
 
-/* Scanline overlay */
+/* Scanline overlay — subtle enough to not hurt readability */
 .scanlines::after {
   content: '';
   position: fixed;
@@ -90,8 +90,8 @@
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
+    rgba(0, 0, 0, 0.015) 2px,
+    rgba(0, 0, 0, 0.015) 4px
   );
 }
 
@@ -264,23 +264,23 @@ html {
   border-radius: 50%;
 }
 
-/* Noise texture overlay */
+/* Noise texture overlay — reduced opacity */
 .noise::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.015;
+  opacity: 0.008;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* Vignette effect */
+/* Vignette effect — reduced intensity for readability */
 .vignette::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9997;
-  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.2) 100%);
 }
