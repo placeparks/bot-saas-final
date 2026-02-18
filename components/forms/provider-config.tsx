@@ -15,6 +15,7 @@ interface ProviderConfigProps {
 }
 
 export default function ProviderConfig({ config, onChange }: ProviderConfigProps) {
+  const selectedProvider = PROVIDERS.find(p => p.id === config.provider)
   const [showApiKey, setShowApiKey] = useState(false)
   const [modelOpen, setModelOpen] = useState(false)
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0, openUp: false })
@@ -68,7 +69,7 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
       {/* Provider Selection */}
       <div>
         <Label className="text-lg mb-4 block text-white/90">Choose AI Provider</Label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {PROVIDERS.map(p => {
             const isSelected = config.provider === p.id
             return (
@@ -97,48 +98,66 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
       </div>
 
       {/* API Key Input */}
-      <div>
-        <Label htmlFor="apiKey" className="text-lg mb-2 block text-white/90">
-          API Key
-        </Label>
-        <p className="text-sm text-white/60 mb-3">
-          Your API key is encrypted and never shared. We use it only to run your bot.
-        </p>
-        <div className="flex gap-2">
-          <div className="relative flex-1">
-            <Input
-              id="apiKey"
-              type={showApiKey ? 'text' : 'password'}
-              placeholder={`Enter your ${PROVIDERS.find(p => p.id === config.provider)?.name || 'provider'} API key`}
-              value={config.apiKey}
-              onChange={(e) => onChange({ apiKey: e.target.value })}
-              className="pr-10 border-red-500/15 bg-white/[0.03] text-white placeholder:text-white/20 focus:border-red-500/40"
-            />
-            <button
-              type="button"
-              onClick={() => setShowApiKey(!showApiKey)}
-              className="absolute right-3 top-1/2 -translate-y-1/2"
-            >
-              {showApiKey ? (
-                <EyeOff className="h-4 w-4 text-white/30 hover:text-white/50 transition-colors" />
-              ) : (
-                <Eye className="h-4 w-4 text-white/30 hover:text-white/50 transition-colors" />
-              )}
-            </button>
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => {
-              const prov = PROVIDERS.find(p => p.id === config.provider)
-              if (prov) window.open(prov.getKeyUrl, '_blank')
-            }}
-            className="border-red-500/30 text-red-400 hover:border-red-500/50 hover:text-red-300 hover:bg-red-500/5"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Get Key
-          </Button>
+      {selectedProvider?.noKeyRequired ? (
+        <div>
+          <Label htmlFor="apiKey" className="text-lg mb-2 block text-white/90">
+            Host URL (Optional)
+          </Label>
+          <p className="text-sm text-white/60 mb-3">
+            No API key needed. Provide the host URL if not using the default (http://localhost:11434).
+          </p>
+          <Input
+            id="apiKey"
+            type="text"
+            placeholder="http://localhost:11434"
+            value={config.apiKey}
+            onChange={(e) => onChange({ apiKey: e.target.value })}
+            className="border-red-500/15 bg-white/[0.03] text-white placeholder:text-white/20 focus:border-red-500/40"
+          />
         </div>
-      </div>
+      ) : (
+        <div>
+          <Label htmlFor="apiKey" className="text-lg mb-2 block text-white/90">
+            API Key
+          </Label>
+          <p className="text-sm text-white/60 mb-3">
+            Your API key is encrypted and never shared. We use it only to run your bot.
+          </p>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Input
+                id="apiKey"
+                type={showApiKey ? 'text' : 'password'}
+                placeholder={`Enter your ${selectedProvider?.name || 'provider'} API key`}
+                value={config.apiKey}
+                onChange={(e) => onChange({ apiKey: e.target.value })}
+                className="pr-10 border-red-500/15 bg-white/[0.03] text-white placeholder:text-white/20 focus:border-red-500/40"
+              />
+              <button
+                type="button"
+                onClick={() => setShowApiKey(!showApiKey)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {showApiKey ? (
+                  <EyeOff className="h-4 w-4 text-white/30 hover:text-white/50 transition-colors" />
+                ) : (
+                  <Eye className="h-4 w-4 text-white/30 hover:text-white/50 transition-colors" />
+                )}
+              </button>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (selectedProvider) window.open(selectedProvider.getKeyUrl, '_blank')
+              }}
+              className="border-red-500/30 text-red-400 hover:border-red-500/50 hover:text-red-300 hover:bg-red-500/5"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Get Key
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Model Selection (Optional) */}
       <div>
@@ -157,7 +176,7 @@ export default function ProviderConfig({ config, onChange }: ProviderConfigProps
           >
             <span className={config.model ? 'text-white' : 'text-white/50'}>
               {config.model
-                ? PROVIDERS.find(p => p.id === config.provider)?.models.find(m => m.id === config.model)?.name || config.model
+                ? selectedProvider?.models.find(m => m.id === config.model)?.name || config.model
                 : 'Default (Recommended)'}
             </span>
             <ChevronDown className={`h-4 w-4 text-white/30 transition-transform ${modelOpen ? 'rotate-180' : ''}`} />
