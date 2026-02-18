@@ -119,7 +119,7 @@ export function AgentSettings({ config, onConfigChange }: AgentSettingsProps) {
           <span className="text-[9px] font-mono text-red-500/40 uppercase tracking-wider">ai-provider</span>
         </div>
         <CardContent className="pt-5 space-y-4">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {PROVIDERS.map(p => (
               <button
                 key={p.id}
