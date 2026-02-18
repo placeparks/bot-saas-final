@@ -13,7 +13,7 @@ export default function PricingPage() {
   const plans = [
     {
       name: 'Monthly',
-      price: 29,
+      price: 35,
       period: '/month',
       description: 'Try it out. Cancel anytime.',
       features: [
@@ -27,13 +27,13 @@ export default function PricingPage() {
     },
     {
       name: 'Yearly',
-      price: 299,
+      price: 320,
       pricePerMonth: 24.92,
       period: '/year',
       discount: 14,
       badge: 'BEST VALUE',
       popular: true,
-      description: 'Best value. Save $49.',
+      description: 'Best value. Save $100.',
       features: [
         'All features included',
         'Unlimited messages',
@@ -62,7 +62,7 @@ export default function PricingPage() {
             </div>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/login" className="text-white/40 hover:text-white transition font-mono text-xs">Login</Link>
+            <Link href="/login" className="text-white/60 hover:text-white transition font-mono text-xs">Login</Link>
             <Link
               href="/register"
               className="bg-red-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-500 transition shadow-[0_0_20px_rgba(220,38,38,0.2)]"
@@ -82,7 +82,7 @@ export default function PricingPage() {
         {mobileOpen && (
           <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/[0.03] p-4 md:hidden">
             <div className="flex flex-col gap-3 text-sm font-mono">
-              <Link href="/login" className="text-white/40 hover:text-white transition" onClick={() => setMobileOpen(false)}>Login</Link>
+              <Link href="/login" className="text-white/60 hover:text-white transition" onClick={() => setMobileOpen(false)}>Login</Link>
               <Link
                 href="/register"
                 className="mt-2 inline-flex items-center justify-center rounded-lg bg-red-600 px-5 py-2 font-semibold text-white hover:bg-red-500 transition"
@@ -106,10 +106,10 @@ export default function PricingPage() {
               <h1 className="text-4xl md:text-5xl font-bold">
                 Simple plans for <span className="text-red-500">Claw Club</span>
               </h1>
-              <p className="mt-4 text-white/40 font-mono text-sm">
+              <p className="mt-4 text-white/60 font-mono text-sm">
                 All plans include full OpenClaw functionality, private instances, and multi-channel support.
               </p>
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-mono text-white/30">
+              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-mono text-white/50">
                 <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-red-500/50" /> Private containers</div>
                 <div className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500/50" /> Unlimited messages</div>
                 <div className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500/50" /> Telegram + Discord</div>
@@ -117,7 +117,7 @@ export default function PricingPage() {
             </div>
             <div className="rounded-xl border border-red-500/15 bg-white/[0.02] p-6 text-sm">
               <div className="text-[10px] uppercase tracking-[0.2em] text-red-500/50 font-mono">Included</div>
-              <ul className="mt-4 space-y-2 text-white/50 font-mono text-xs">
+              <ul className="mt-4 space-y-2 text-white/65 font-mono text-xs">
                 {['OpenClaw gateway', 'Channel pairing', 'Skills & extensions', 'Web search & browser', 'Secure keys'].map(item => (
                   <li key={item} className="flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-red-500" /> {item}
@@ -146,19 +146,19 @@ export default function PricingPage() {
 
               <div className="mb-6">
                 <h3 className="text-xs font-mono text-red-500/60 uppercase tracking-wider">{plan.name}</h3>
-                <p className="mt-1 text-xs text-white/30 font-mono">{plan.description}</p>
+                <p className="mt-1 text-xs text-white/55 font-mono">{plan.description}</p>
                 <div className="mt-4 flex items-end gap-2">
                   <span className="text-4xl font-bold">${plan.price}</span>
-                  <span className="text-sm text-white/30 font-mono mb-1">{plan.period}</span>
+                  <span className="text-sm text-white/50 font-mono mb-1">{plan.period}</span>
                 </div>
                 {plan.pricePerMonth && (
-                  <p className="text-[10px] text-white/25 mt-2 font-mono">${plan.pricePerMonth}/month effective</p>
+                  <p className="text-[10px] text-white/45 mt-2 font-mono">${plan.pricePerMonth}/month effective</p>
                 )}
               </div>
 
               <ul className="space-y-2.5 mb-6">
                 {plan.features.map((feature, index) => (
-                  <li key={index} className="flex items-start text-xs text-white/50 font-mono">
+                  <li key={index} className="flex items-start text-xs text-white/70 font-mono">
                     <div className="w-1 h-1 rounded-full bg-red-500 mr-2 mt-1.5 shrink-0" />
                     <span>{feature}</span>
                   </li>
@@ -191,7 +191,7 @@ export default function PricingPage() {
             ].map((item) => (
               <div key={item.q} className="rounded-xl border border-red-500/15 bg-white/[0.02] p-5 hover:border-red-500/30 transition-colors">
                 <h3 className="font-semibold text-white/80 text-sm">{item.q}</h3>
-                <p className="mt-2 text-xs text-white/40 font-mono">{item.a}</p>
+                <p className="mt-2 text-xs text-white/60 font-mono">{item.a}</p>
               </div>
             ))}
           </div>
@@ -199,8 +199,8 @@ export default function PricingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 border-t border-red-500/10 py-10">
-        <div className="max-w-6xl mx-auto px-6 text-center text-xs font-mono text-white/20">
+      <footer className="mt-16 border-t border-red-500/20 py-12 bg-[#080808]/50">
+        <div className="max-w-6xl mx-auto px-6 text-center text-sm font-mono text-white/55">
           <p>&copy; 2026 Claw Club. Built on OpenClaw. All rights reserved.</p>
         </div>
       </footer>
